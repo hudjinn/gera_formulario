@@ -26,9 +26,11 @@
 		border: 1px solid #dddddd;
 		text-align: left;
 		padding: 8px;
+
 	}
 	.checkbox-container {
-		gap: 20px;
+		margin-top: 5px;
+		gap: 10px;
 		border: 1px solid #000;
 		width: fit-content;
 	}
@@ -36,10 +38,11 @@
 	th {
 		background-color: #4CAF50;
 		color: white;
+
 	}
 	.divisoria {
 		border-top: 2px solid #ccc;
-		margin-top: 20px;
+		margin-top: 15px;
 	}
 	button {
 		background-color: #4CAF50;
@@ -69,13 +72,52 @@
 		height: 30px;
 		margin-bottom: 10px;
 	}
+	.monitor {
+		position: relative;
+	}
+  
+	#logo {
+		margin-left: 0;
+		max-width: 100%; /* Garante que o logo não ultrapasse a largura máxima */
+		z-index: -1; /* Coloca o logo acima do background */
+		margin-bottom: 8px;
+	}
+  
+	h2 {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translateX(-50%); /* Centraliza horizontalmente */
+		margin-top: 20px;
+		color: #FFFFFF;
+		z-index: -1; /* Coloca o título acima do background */
+		text-align: center;
+
+	}
+
+	#bg {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 80px; /* Ajuste conforme necessário */
+		z-index: -2; /* Coloca o background abaixo do logo e do título */
+	}
+	#nova-entrada-btn {
+		margin-top: 10px;
+		margin-left: 10px;
+
+	}
 </style>
-
-<img src="https://monitordesecas.ana.gov.br/assets/img/logo_nome_horizontal_branco.png">
-
+</head>
+<body>
+	<div class="monitor">
+	  <img id="logo" src="https://monitordesecas.ana.gov.br/assets/img/logo_nome_horizontal_branco.png" alt="Logo">
+	  <h2>Formulário de Impactos de Seca</h2>
+	  <img id="bg" src="https://monitordesecas.ana.gov.br/monitor_fundo_topo.eecefd2edf0a8c450c61.png" alt="Background">
+	</div>
 <div class="container-fluid">
-	<h2>Formulário de Persistência de Seca</h2>
-	<br>
+
 	<form action="processar_dados.php" method="post">
 
 		<div class="row">
@@ -229,14 +271,13 @@
 		</div>
     </div>
 
-    <br>
     <button type="button" id="nova-entrada-btn">Nova Entrada</button>
     <button type="button" id="salvar-edicao-btn" style="display: none;">Salvar Edição</button>
     <button type="button" id="cancelar-btn" style="display: none;">Cancelar</button>
 	</form>
 
 	<div class="divisoria"></div>
-	<br>
+
 
 	<table id="tabela-dados" border="1">
 		<thead>
@@ -251,6 +292,7 @@
 				<th>Situação das Culturas de Sequeiro</th>
 				<th>Tipo de Cultura</th>
 				<th>Problema/Restrição</th>
+				
 			</tr>
 		</thead>
 		<tbody></tbody>
@@ -582,9 +624,9 @@
 						'Município': entrada.municipio,
 						'Chuva (DT)': entrada.chuva_dt,
 						'Chuva (DE)': entrada.chuva_de,
-						'Percepção Subjetiva': entrada.percepcao,
+						'Percepção Subjetiva': entrada.percepcao_subj,
 						'Acesso à Água': entrada.acesso_agua,
-						'Situação das Culturas de Sequeiro': entrada.situacao_culturas_sequeiro,
+						'Situação das Culturas de Sequeiro': entrada.sit_cultura,
 						'Tipo de Cultura': obterTextosSelecionados(entrada.tipo_cultura, 'input[name="tipo_cultura[]"]'),
 						'Problema/Restrição': obterTextosSelecionados(entrada.problema_restricao, 'input[name="problema_restricao[]"]')
 					};

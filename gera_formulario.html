@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<title>Formulário - Persistência de Chuva</title>
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+	<script src="https://cdn.rawgit.com/eu81273/js-xlsx/v0.13.0/dist/jszip.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+
+</head>
+
+<body>
+<style>
+	body {
+		font-family: Arial, sans-serif;
+	}
+	label {
+		text-align: center;
+		vertical-align: top;
+	}
+	th, td {
+		border: 1px solid #dddddd;
+		text-align: left;
+		padding: 8px;
+	}
+	.checkbox-container {
+		gap: 20px;
+		border: 1px solid #000;
+		width: fit-content;
+	}
+
+	th {
+		background-color: #4CAF50;
+		color: white;
+	}
+	.divisoria {
+		border-top: 2px solid #ccc;
+		margin-top: 20px;
+	}
+	button {
+		background-color: #4CAF50;
+		color: white;
+		padding: 10px 15px;
+		border: none;
+		border-radius: 5px;
+		cursor: pointer;
+	}
+	.remover-btn {
+		background-color: #FF0000;
+		color: #FFFFFF;
+		border: 1px solid #FF0000;
+		border-radius: 5px;
+		padding: 10px 15px;
+		cursor: pointer;
+	}
+	.editando-btn {
+		background-color: #aaaab3;
+		color: #000000;
+		border: 1px solid #aaaab3;
+		border-radius: 5px;
+		padding: 10px 15px;
+		cursor: pointer;
+	}
+	select {
+		height: 30px;
+		margin-bottom: 10px;
+	}
+</style>
+
+<img src="https://monitordesecas.ana.gov.br/assets/img/logo_nome_horizontal_branco.png">
+
+<div class="container-fluid">
+	<h2>Formulário de Persistência de Seca</h2>
+	<br>
+	<form action="processar_dados.php" method="post">
+
+		<div class="row">
+			<div class="col-md-2">
+				<label for="uf"><strong>UF:</strong></label>
+				<select id="uf" name="uf" required></select>
+			</div>
+
+			<div class="col-md-4">
+				<label for="municipio"><strong>Município:</strong></label>
+				<select id="municipio" name="municipio" required></select>
+			</div>
+
+			<div class="col-md-2">
+				<label for="ano"><strong>Ano:</strong></label>
+				<input class="anomes" type="number" id="ano" name="ano" required min="1900" max="2099">
+			</div>
+			<div class="col-md-2">
+				<label for="mes"><strong>Mês:</strong></label>
+				<input class="anomes" type="number" id="mes" name="mes" required min="1" max="12">
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-6">
+				<label for="chuva_dt"><strong>Distribuição Temporal (DT) - Chuva:</strong></label>
+				<select id="chuva_dt" name="chuva_dt" required>
+					<option value="dt_chuva_1">Não choveu</option>
+					<option value="dt_chuva_2">Menos de 10 dias</option>
+					<option value="dt_chuva_3">Mais de 10 dias</option>
+					<option value="dt_chuva_99">Não sei avaliar</option>
+				</select>
+			</div>
+
+			<div class="col-md-6">
+				<label for="chuva_de"><strong>Distribuição Espacial (DE) - Chuva:</strong></label>
+				<select id="chuva_de" name="chuva_de" required>
+					<option value="chuva_de_1">Não choveu</option>
+					<option value="chuva_de_2">Chuva isolada</option>
+					<option value="chuva_de_3">Chuva abrangente</option>
+					<option value="chuva_de_99">Não sei avaliar</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="row">
+				<div class="col-md-6">
+					<label for="percepcao_subj"><strong>Percepção Subjetiva da Seca:</strong></label>
+					<select id="percepcao_subj" name="percepcao_subj" required>
+						<option value="percepcao_subj_1">Houve melhora</option>
+						<option value="percepcao_subj_2">Houve piora</option>
+						<option value="percepcao_subj_3">Não houve alteração</option>
+						<option value="percepcao_subj_4">Não há seca</option>
+						<option value="percepcao_subj_99">Não sei opinar</option>
+					</select>
+				</div>
+				<div class="col-md-6">
+					<label for="sit_cultura"><strong>Situação das Culturas de Sequeiro:</strong></label>
+					<select id="sit_cultura" name="sit_cultura" required>
+						<option value="sit_cultura_1">Não é época de plantio</option>
+						<option value="sit_cultura_2">Plantio atrasado</option>
+						<option value="sit_cultura_3">Nenhuma perda</option>
+						<option value="sit_cultura_4">Alguma perda</option>
+						<option value="sit_cultura_5">Grandes perdas</option>
+						<option value="sit_cultura_6">Perdas prováveis</option>
+						<option value="sit_cultura_99">Não sei informar</option>'
+					</select>
+				</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<label for="acesso_agua"><strong>Acesso à água:</strong></label>
+
+				<select id="acesso_agua" name="acesso_agua" required>
+					<option value="acesso_agua_1">Nenhum problema</option>
+					<option value="acesso_agua_2">Níveis baixos, mas sem problemas</option>
+					<option value="acesso_agua_3">Níveis baixos e alguns usos afetados</option>
+					<option value="acesso_agua_4">Níveis muito baixos e há restrições de uso</option>
+					<option value="acesso_agua_5">Níveis críticos e restrições severas</option>
+					<option value="acesso_agua_6">Sistemas hídricos em colapso/Falta d'água generalizada</option>
+					<option value="acesso_agua_99">Não sei informar</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="row">
+			
+			<div class="checkbox-container col-md-3" style="margin-left: 12px" id="header">
+				<label for="tipo_cultura"><strong>Tipos de Culturas:</strong></label>
+				<br>
+				<input type="checkbox" id="tipo_cultura_1" name="tipo_cultura[]" value="tipo_cultura_1">
+				<label for="tipo_cultura_1">Arroz</label><br>
+			
+				<input type="checkbox" id="tipo_cultura_2" name="tipo_cultura[]" value="tipo_cultura_2">
+				<label for="tipo_cultura_2">Cana-de-açúcar</label><br>
+			
+				<input type="checkbox" id="tipo_cultura_3" name="tipo_cultura[]" value="tipo_cultura_3">
+				<label for="tipo_cultura_3">Cevada</label><br>
+			
+				<input type="checkbox" id="tipo_cultura_4" name="tipo_cultura[]" value="tipo_cultura_4">
+				<label for="tipo_cultura_4">Feijão</label><br>
+			
+				<input type="checkbox" id="tipo_cultura_5" name="tipo_cultura[]" value="tipo_cultura_5">
+				<label for="tipo_cultura_5">Milho</label><br>
+			
+				<input type="checkbox" id="tipo_cultura_6" name="tipo_cultura[]" value="tipo_cultura_6">
+				<label for="tipo_cultura_6">Soja</label><br>
+			
+				<input type="checkbox" id="tipo_cultura_7" name="tipo_cultura[]" value="tipo_cultura_7">
+				<label for="tipo_cultura_7">Trigo</label><br>
+			
+				<input type="checkbox" id="tipo_cultura_98" name="tipo_cultura[]" value="tipo_cultura_98">
+				<label for="tipo_cultura_98">Outra</label><br>
+			
+				<input type="checkbox" id="tipo_cultura_99" name="tipo_cultura[]" value="tipo_cultura_99">
+				<label for="tipo_cultura_99">Não informado</label><br>
+			</div>
+
+			<div class="col-md-3"></div>			
+
+			<div class="checkbox-container col-md-3">
+				<label for="problema_restricao" id="header"><strong>Problema/Restrição:</strong></label><br>
+
+				<input type="checkbox" id="problema_restricao_1" name="problema_restricao[]" value="problema_restricao_1">
+				<label for="problema_restricao_1">Sem problemas</label><br>
+
+				<input type="checkbox" id="problema_restricao_2" name="problema_restricao[]" value="problema_restricao_2">
+				<label for="problema_restricao_2">Navegabilidade comprometida</label><br>
+
+				<input type="checkbox" id="problema_restricao_3" name="problema_restricao[]" value="problema_restricao_3">
+				<label for="problema_restricao_3">Racionamento ou rodízio no abastecimento</label><br>
+
+				<input type="checkbox" id="problema_restricao_4" name="problema_restricao[]" value="problema_restricao_4">
+				<label for="problema_restricao_4">Restrições ou suspensão de outorgas</label><br>
+
+				<input type="checkbox" id="problema_restricao_5" name="problema_restricao[]" value="problema_restricao_5">
+				<label for="problema_restricao_5">Desabastecimento público</label><br>
+
+				<input type="checkbox" id="problema_restricao_6" name="problema_restricao[]" value="problema_restricao_6">
+				<label for="problema_restricao_6">Potabilidade da Água</label><br>
+
+				<input type="checkbox" id="problema_restricao_7" name="problema_restricao[]" value="problema_restricao_7">
+				<label for="problema_restricao_7">Mortandade de peixes</label><br>
+
+				<input type="checkbox" id="problema_restricao_8" name="problema_restricao[]" value="problema_restricao_8">
+				<label for="problema_restricao_8">Dessedentação Animal (morte de gado)</label><br>
+
+				<input type="checkbox" id="problema_restricao_99" name="problema_restricao[]" value="problema_restricao_99">
+				<label for="problema_restricao_99">Não informado</label><br>
+			</div>
+		</div>
+    </div>
+
+    <br>
+    <button type="button" id="nova-entrada-btn">Nova Entrada</button>
+    <button type="button" id="salvar-edicao-btn" style="display: none;">Salvar Edição</button>
+    <button type="button" id="cancelar-btn" style="display: none;">Cancelar</button>
+	</form>
+
+	<div class="divisoria"></div>
+	<br>
+
+	<table id="tabela-dados" border="1">
+		<thead>
+			<tr>
+				<th>Ano/Mês de Referência</th>
+				<th>Estado</th>
+				<th>Município</th>
+				<th>Chuva (DT)</th>
+				<th>Chuva (DE)</th>
+				<th>Percepção Subjetiva</th>
+				<th>Acesso à Água</th>
+				<th>Situação das Culturas de Sequeiro</th>
+				<th>Tipo de Cultura</th>
+				<th>Problema/Restrição</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+	<br>
+
+	<button type="button" id="exportar-btn">Exportar para XLSX</button>
+	<div class="divisoria"></div>
+</div>
+
+<script>
+	$(document).ready(function () {
+		var dados = [];
+		var ufSelecionada = '';
+		var rowIndex;
+		var formData;
+
+		// Inserir nova linha no TD
+		function novaLinha(formData) {
+			var tipoCulturaText = obterTextosSelecionados(formData.tipo_cultura, 'input[name="tipo_cultura[]"]');
+			var problemaRestricaoText = obterTextosSelecionados(formData.problema_restricao, 'input[name="problema_restricao[]"]');
+		
+
+			var novaLinha = $('<tr>').append(
+				$('<td>').text(formData.anoMes),
+				$('<td>').text(formData.uf),
+				$('<td>').text(formData.municipio),
+				$('<td>').text(formData.chuva_dt),
+				$('<td>').text(formData.chuva_de),
+				$('<td>').text(formData.percepcao_subj),
+				$('<td>').text(formData.acesso_agua),
+				$('<td>').text(formData.sit_cultura),
+				$('<td>').text(tipoCulturaText),
+				$('<td>').text(problemaRestricaoText),
+				$('<td>').html('<button type="button" class="editar-btn">Editar</button>'),
+				$('<td>').html('<button type="button" class="remover-btn"> x </button>')
+			);
+
+			$('#tabela-dados tbody').append(novaLinha);
+			$('form')[0].reset();
+		}
+		
+		//Preencher Campos
+		function recarregarForm(entrada) {
+			$('#ano').val(entrada.ano); // Extrair o ano da string Ano/Mês
+			$('#mes').val(entrada.mes); // Extrair o mês da string Ano/Mês
+			$('#uf').val(entrada.uf);
+			$('#municipio').val(entrada.municipio);
+			$('#chuva_dt').val(entrada.chuva_dt_val);
+			$('#chuva_de').val(entrada.chuva_de_val);
+			$('#percepcao_subj').val(entrada.percepcao_subj_val);
+			$('#acesso_agua').val(entrada.acesso_agua_val);
+			$('#sit_cultura').val(entrada.sit_cultura_val);
+		
+
+			// Preencher checkboxes de tipo_cultura
+			$('input[name="tipo_cultura[]"]').prop('checked', false); // Desmarcar todas as checkboxes
+			entrada.tipo_cultura_val.forEach(function (tipo) {
+				$('input[name="tipo_cultura[]"][id="' + tipo + '"]').prop('checked', true);
+			});
+		
+			// Preencher checkboxes de problema_restricao
+			$('input[name="problema_restricao[]"]').prop('checked', false); // Desmarcar todas as checkboxes
+			entrada.problema_restricao_val.forEach(function (problema) {
+				$('input[name="problema_restricao[]"][id="' + problema + '"]').prop('checked', true);
+			});
+			
+		}
+
+		function criarValidar(){
+			
+			// Verificar se UF, Município, Ano e Mês foram preenchidos
+			var uf = $('#uf').val();
+			var municipio = $('#municipio').val();
+			ufSelecionada = $('#uf').val();
+			// Verificar o intervalo para Ano
+			var ano = parseInt($('#ano').val(), 10);
+			if (ano < 1950 || ano > 2099) {
+				alert('Erro: Verifique o Ano digitado. O formato é AAAA. Ex: 2024');
+				return;
+			}
+
+			// Formatar o Mês para garantir que seja exibido com dois dígitos
+			var mes = $('#mes').val().padStart(2, '0');
+
+			// Verificar o intervalo para Mês
+			if (parseInt(mes, 10) < 1 || parseInt(mes, 10) > 12) {
+				alert('Erro: Mês deve estar entre 1 e 12.');
+				return;
+			}
+			if (!uf || !municipio || !ano || !mes) {
+				alert('Preencha UF, Município, Ano e Mês antes de adicionar uma nova entrada.');
+				return;
+			}
+			$('#uf').empty().append('<option value="' + ufSelecionada + '">' + ufSelecionada + '</option>').val(ufSelecionada);
+			$('#uf').prop('disabled', true);
+
+            var checkboxMarcada = $('input[name="tipo_cultura[]"]:checked').length > 0 &&
+                $('input[name="problema_restricao[]"]:checked').length > 0;
+
+            if (!checkboxMarcada) {
+                alert('Selecione pelo menos uma opção em Tipo de Cultura ou Problema/Restrição.');
+                return;
+            }
+
+			// Verificar se "Sem problemas" foi marcado em Problema/Restrição
+			var semProblemasMarcado = $('input[name="problema_restricao[]"][value="problema_restricao_1"]').prop('checked');
+			var outrasOpcoesMarcadas = $('input[name="problema_restricao[]"]:checked').not('[value="problema_restricao_1"]').length > 0;
+
+			if (semProblemasMarcado && outrasOpcoesMarcadas) {
+				alert('Erro: Selecione apenas "Sem problemas" ou outras opções, não ambas.');
+				return;
+			}
+
+			formData = {
+				ano: $('#ano').val(),
+				mes: $('#mes').val(),
+				anoMes: ano + '-' + mes,
+				uf: $('#uf').val(),
+				municipio: $('#municipio').val(),
+				chuva_dt_val: $('#chuva_dt').val(),  // Use .val() instead of .text()
+				chuva_dt: $('#chuva_dt option:selected').text(),
+				chuva_de: $('#chuva_de option:selected').text(),
+				chuva_de_val: $('#chuva_de').val(),  // Use .val() instead of .text()
+				percepcao_subj: $('#percepcao_subj option:selected').text(),
+				percepcao_subj_val: $('#percepcao_subj').val(),  // Use .val() instead of .text()
+				acesso_agua: $('#acesso_agua option:selected').text(),
+				acesso_agua_val: $('#acesso_agua').val(),  // Use .val() instead of .text()
+				sit_cultura: $('#sit_cultura option:selected').text(),
+				sit_cultura_val: $('#sit_cultura').val(),  // Use .val() instead of .text()
+		
+				tipo_cultura: $('input[name="tipo_cultura[]"]:checked').map(function () {
+					return this.value;  // Use this.value to get the value attribute
+				}).get(),
+		
+				tipo_cultura_val: $('input[name="tipo_cultura[]"]:checked').map(function () {
+					return this.value;  // Use this.value to get the value attribute
+				}).get(),
+		
+				problema_restricao: $('input[name="problema_restricao[]"]:checked').map(function () {
+					return this.value;  // Use this.value to get the value attribute
+				}).get(),
+		
+				problema_restricao_val: $('input[name="problema_restricao[]"]:checked').map(function () {
+					return this.value;  // Use this.value to get the value attribute
+				}).get(),
+			};
+
+            if (formData.problema_restricao.includes('problema_restricao_99') && formData.problema_restricao.length > 1) {
+                alert('Erro: Selecione apenas "Não Informado" ou outras opções, não ambas.');
+                return;
+            }
+
+            if (formData.tipo_cultura.includes('tipo_cultura_99') && formData.tipo_cultura.length > 1) {
+                alert('Erro: Selecione apenas "Não Informado" ou outras opções, não ambas.');
+                return;
+            }
+
+            ufSelecionada = formData.uf;
+			return formData
+            
+
+		}
+
+		// Carregar UF
+		function carregarUFs(ufSelecionada) {
+			$.ajax({
+				url: 'https://servicodados.ibge.gov.br/api/v1/localidades/estados',
+				type: 'GET',
+				dataType: 'json',
+				success: function (data) {
+					var ufSelect = $('#uf');
+	
+					if (ufSelecionada !== '') {
+						ufSelect.val(ufSelecionada);
+					} else {
+						ufSelect.empty();
+						ufSelect.append('<option value="" selected disabled>Selecionar UF</option>');
+	
+						data.sort(function (a, b) {
+							return a.sigla.localeCompare(b.sigla);
+						});
+	
+						data.forEach(function (uf) {
+							ufSelect.append('<option value="' + uf.sigla + '">' + uf.sigla + '</option>');
+						});
+	
+						ufSelect.on('change', function () {
+							carregarMunicipios($(this).val());
+						});
+					}
+				}
+			});
+		}
+
+		//Carregar Municipios
+		function carregarMunicipios(uf) {
+			$.ajax({
+				url: 'https://servicodados.ibge.gov.br/api/v1/localidades/estados/' + uf + '/municipios',
+				type: 'GET',
+				dataType: 'json',
+				success: function (data) {
+					var municipioSelect = $('#municipio');
+					municipioSelect.empty();
+	
+					data.sort(function (a, b) {
+						return a.nome.localeCompare(b.nome);
+					});
+	
+					data.forEach(function (municipio) {
+						municipioSelect.append('<option value="' + municipio.nome + '">' + municipio.nome + '</option>');
+					});
+				}
+			});
+		}
+		function obterTextosSelecionados(valoresSelecionados, checkboxSelector) {
+			return valoresSelecionados.map(function (valor) {
+				return $(checkboxSelector + '[value="' + valor + '"]').next('label').text();
+			}).join(', ');
+		}
+
+
+		carregarUFs(ufSelecionada);
+
+		//Inicio
+		$('#nova-entrada-btn').on('click', function () {
+			
+			formData = criarValidar()
+			ufSelecionada = formData.uf;
+			novaLinha(formData)
+			dados.push(formData)
+			$('#uf').prop('disabled', true);
+		});
+			
+
+		// Função para editar uma entrada
+		$('#tabela-dados tbody').on('click', '.editar-btn', function () {
+			rowIndex = $(this).closest('tr').index();
+			entrada = dados[rowIndex];
+
+			// Preencher os campos do formulário com os valores da entrada
+			recarregarForm(entrada);
+			formData = criarValidar()
+			
+			// Oculta o botão "Editar" e exibe o botão "Salvar Edição"
+			$(this).hide();
+			$('#nova-entrada-btn').hide();
+			$('#salvar-edicao-btn').show();
+			$('#cancelar-btn').show();
+			$('.editar-btn').hide();
+
+			var editandoBtn = $('<h6 class="editando-btn">Editando</h6>');
+			$(editandoBtn).insertAfter(this);
+
+			$('#uf').prop('disabled', true);
+		});
+		$(document).on('click', '#cancelar-btn', function () {
+			// Limpa o formulário e exibe o botão "Nova Entrada"
+			$('form')[0].reset();
+			$('#nova-entrada-btn').show();
+			$('#salvar-edicao-btn').hide();
+			$('.editar-btn').show();
+			$('#cancelar-btn').hide();
+			$('.editando-btn').remove();
+			$('#uf').prop('disabled', false);
+		});
+
+		// Função para remover uma entrada
+		$('#tabela-dados tbody').on('click', '.remover-btn', function () {
+			var rowIndex = $(this).closest('tr').index();
+			dados.splice(rowIndex, 1);
+			$(this).closest('tr').remove();
+			
+		});
+
+		// Define a ação do botão "Salvar Edição"
+		$('#salvar-edicao-btn').on('click', function () {
+			formData = criarValidar()
+
+			// Limpa o formulário e exibe o botão "Nova Entrada"
+			dados[rowIndex] = formData;
+			novaLinha(formData);
+			$('form')[0].reset();
+			$('#uf').prop('disabled', false);
+
+			$('#nova-entrada-btn').show();
+			$('#salvar-edicao-btn').hide();
+			$('.editar-btn').show();
+			$('.editando-btn').remove();
+			$('#cancelar-btn').hide()
+			$('#tabela-dados tbody tr:eq(' + rowIndex + ')').remove();
+
+		});
+		$(document).on('click', '#cancelar-edicao-btn', function () {
+			// Limpa o formulário e exibe o botão "Nova Entrada"
+			$('form')[0].reset();
+			$('#nova-entrada-btn').show();
+			$('#salvar-edicao-btn').hide();
+			$('.editar-btn').show();
+			$('#editando-msg').hide();
+			$('#cancelar-edicao-btn').remove();
+			$('#uf').prop('disabled', false);
+		});
+
+		$('#exportar-btn').on('click', function () {
+			if (dados.length === 0) {
+				alert('Não há dados para exportar.');
+				return;
+			}
+		
+			var workbook = XLSX.utils.book_new();
+		
+			// Agrupar dados por AnoMes
+			var dadosPorAnoMes = {};
+			dados.forEach(function (entrada) {
+				var anoMes = entrada.anoMes;
+				if (!dadosPorAnoMes[anoMes]) {
+					dadosPorAnoMes[anoMes] = [];
+				}
+				dadosPorAnoMes[anoMes].push(entrada);
+			});
+		
+			// Criar abas para cada AnoMes
+			Object.keys(dadosPorAnoMes).forEach(function (anoMes) {
+				var dadosSheet = dadosPorAnoMes[anoMes].map(function (entrada) {
+					return {
+						'Ano/Mês de Referência': entrada.anoMes,
+						'Estado': entrada.uf,
+						'Município': entrada.municipio,
+						'Chuva (DT)': entrada.chuva_dt,
+						'Chuva (DE)': entrada.chuva_de,
+						'Percepção Subjetiva': entrada.percepcao,
+						'Acesso à Água': entrada.acesso_agua,
+						'Situação das Culturas de Sequeiro': entrada.situacao_culturas_sequeiro,
+						'Tipo de Cultura': obterTextosSelecionados(entrada.tipo_cultura, 'input[name="tipo_cultura[]"]'),
+						'Problema/Restrição': obterTextosSelecionados(entrada.problema_restricao, 'input[name="problema_restricao[]"]')
+					};
+				});
+		
+				var worksheet = XLSX.utils.json_to_sheet(dadosSheet);
+				XLSX.utils.book_append_sheet(workbook, worksheet, anoMes);
+			});
+		
+			var filename = 'impacto_de_secas_' + ufSelecionada + '.xlsx';
+			XLSX.writeFile(workbook, filename);
+		});
+});
+</script>
+
+
+
+</body>
+</html>

@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-	<title>Formulário - Persistência de Chuva</title>
-	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
-	<script src="https://cdn.rawgit.com/eu81273/js-xlsx/v0.13.0/dist/jszip.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Formulário - Persistência de Chuva</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+    <script src="https://cdn.rawgit.com/eu81273/js-xlsx/v0.13.0/dist/jszip.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 </head>
-
 <body>
 <style>
 	body {
@@ -70,29 +68,40 @@
 	}
 	select {
 		height: 30px;
+		width: 20vw;
 		margin-bottom: 10px;
+	}
+	input.anomes {
+
+		height: 30px;
+		width: 12vw;
+		margin-bottom: 10px;
+		
+	}
+	select#uf {
+		width: fit-content;
 	}
 	.monitor {
 		position: relative;
 	}
   
 	#logo {
+		margin-top: 1vh;
 		margin-left: 0;
-		max-width: 100%; /* Garante que o logo não ultrapasse a largura máxima */
-		z-index: -1; /* Coloca o logo acima do background */
-		margin-bottom: 8px;
+		width: calc(30vh + 8px);
+		max-width: 75%;
+		z-index: 0; /* Alterado para 0 para colocar o logo no mesmo nível que o título */
 	}
-  
+	
 	h2 {
 		position: absolute;
 		top: 0;
 		left: 50%;
-		transform: translateX(-50%); /* Centraliza horizontalmente */
-		margin-top: 20px;
+		transform: translateX(-50%);
+		margin-top: 2vh;
 		color: #FFFFFF;
-		z-index: -1; /* Coloca o título acima do background */
 		text-align: center;
-
+		font-size: calc(3vw + 2px);
 	}
 
 	#bg {
@@ -108,19 +117,42 @@
 		margin-left: 10px;
 
 	}
+	@media screen and (max-width: 768px) {
+		.logo {
+			width: 100%; /* ou outra largura desejada para telas menores */
+			/* outras propriedades da logo para telas menores... */
+		}
+		h2 {
+			top: 1vh;
+			position: absolute;
+			text-align: right;
+			transform: translateX(0%);
+			margin-right: 5px;
+		}
+		select {
+			width: auto;
+		}
+		th, td {
+			font-size: calc(1vw - 5px);
+		}
+		button {
+			width: auto
+		};
+	}
 </style>
 </head>
 <body>
-	<div class="monitor">
-	  <img id="logo" src="https://monitordesecas.ana.gov.br/assets/img/logo_nome_horizontal_branco.png" alt="Logo">
-	  <h2>Formulário de Impactos de Seca</h2>
-	  <img id="bg" src="https://monitordesecas.ana.gov.br/monitor_fundo_topo.eecefd2edf0a8c450c61.png" alt="Background">
+	<div class="monitor-fluid">
+		<img id="logo" src="https://monitordesecas.ana.gov.br/assets/img/logo_nome_horizontal_branco.png" alt="Logo">
+		<h2>Formulário de Impactos de Seca</h2>
+		<img id="bg" src="https://monitordesecas.ana.gov.br/monitor_fundo_topo.eecefd2edf0a8c450c61.png" alt="Background">
 	</div>
+	<br>
 <div class="container-fluid">
 
 	<form action="processar_dados.php" method="post">
 
-		<div class="row">
+		<div class="row" style="margin-top: 10px;">
 			<div class="col-md-2">
 				<label for="uf"><strong>UF:</strong></label>
 				<select id="uf" name="uf" required></select>
@@ -175,30 +207,30 @@
 					</select>
 				</div>
 				<div class="col-md-6">
-					<label for="sit_cultura"><strong>Situação das Culturas de Sequeiro:</strong></label>
-					<select id="sit_cultura" name="sit_cultura" required>
-						<option value="sit_cultura_1">Não é época de plantio</option>
-						<option value="sit_cultura_2">Plantio atrasado</option>
-						<option value="sit_cultura_3">Nenhuma perda</option>
-						<option value="sit_cultura_4">Alguma perda</option>
-						<option value="sit_cultura_5">Grandes perdas</option>
-						<option value="sit_cultura_6">Perdas prováveis</option>
-						<option value="sit_cultura_99">Não sei informar</option>'
+					<label for="acesso_agua"><strong>Acesso à água:</strong></label>
+	
+					<select id="acesso_agua" name="acesso_agua" required>
+						<option value="acesso_agua_1">Nenhum problema</option>
+						<option value="acesso_agua_2">Níveis baixos, mas sem problemas</option>
+						<option value="acesso_agua_3">Níveis baixos e alguns usos afetados</option>
+						<option value="acesso_agua_4">Níveis muito baixos e há restrições de uso</option>
+						<option value="acesso_agua_5">Níveis críticos e restrições severas</option>
+						<option value="acesso_agua_6">Sistemas hídricos em colapso/Falta d'água generalizada</option>
+						<option value="acesso_agua_99">Não sei informar</option>
 					</select>
 				</div>
 		</div>
 		<div class="row">
-			<div class="col-md-12">
-				<label for="acesso_agua"><strong>Acesso à água:</strong></label>
-
-				<select id="acesso_agua" name="acesso_agua" required>
-					<option value="acesso_agua_1">Nenhum problema</option>
-					<option value="acesso_agua_2">Níveis baixos, mas sem problemas</option>
-					<option value="acesso_agua_3">Níveis baixos e alguns usos afetados</option>
-					<option value="acesso_agua_4">Níveis muito baixos e há restrições de uso</option>
-					<option value="acesso_agua_5">Níveis críticos e restrições severas</option>
-					<option value="acesso_agua_6">Sistemas hídricos em colapso/Falta d'água generalizada</option>
-					<option value="acesso_agua_99">Não sei informar</option>
+			<div class="col-md-6">
+				<label for="sit_cultura"><strong>Situação das Culturas de Sequeiro:</strong></label>
+				<select id="sit_cultura" name="sit_cultura" required>
+					<option value="sit_cultura_1">Não é época de plantio</option>
+					<option value="sit_cultura_2">Plantio atrasado</option>
+					<option value="sit_cultura_3">Nenhuma perda</option>
+					<option value="sit_cultura_4">Alguma perda</option>
+					<option value="sit_cultura_5">Grandes perdas</option>
+					<option value="sit_cultura_6">Perdas prováveis</option>
+					<option value="sit_cultura_99">Não sei informar</option>'
 				</select>
 			</div>
 		</div>
@@ -238,8 +270,8 @@
 
 			<div class="col-md-3"></div>			
 
-			<div class="checkbox-container col-md-3">
-				<label for="problema_restricao" id="header"><strong>Problema/Restrição:</strong></label><br>
+			<div class="checkbox-container col-md-3" style="margin-left: 12px">
+				<label for="problema_restricao" id="header" ><strong>Problema/Restrição:</strong></label><br>
 
 				<input type="checkbox" id="problema_restricao_1" name="problema_restricao[]" value="problema_restricao_1">
 				<label for="problema_restricao_1">Sem problemas</label><br>
@@ -615,8 +647,11 @@
 				dadosPorAnoMes[anoMes].push(entrada);
 			});
 		
+			// Ordenar as chaves (anoMes) em ordem crescente
+			var anosMesOrdenados = Object.keys(dadosPorAnoMes).sort();
+		
 			// Criar abas para cada AnoMes
-			Object.keys(dadosPorAnoMes).forEach(function (anoMes) {
+			anosMesOrdenados.forEach(function (anoMes) {
 				var dadosSheet = dadosPorAnoMes[anoMes].map(function (entrada) {
 					return {
 						'Ano/Mês de Referência': entrada.anoMes,

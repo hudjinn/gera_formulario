@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgis/postgis:latest
+    container_name: postgres
+    environment:
+      POSTGRES_DB: monitor
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+    ports:
+      - "5432:5432"
+    # volumes:
+    #   - ./dados_postgres:/var/lib/postgresql/data

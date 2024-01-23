@@ -1,0 +1,8 @@
+;id_acesso_agua;acesso_agua
+0;1;Nenhum problema
+1;2;Níveis baixos, mas sem problemas
+2;3;Níveis baixos e alguns usos afetados
+3;4;Níveis muito baixos e há restrições de uso
+4;5;Níveis críticos e restrições severas
+5;6;Sistemas hídricos em colapso/Falta d'água generalizada
+6;99;Não sei informar

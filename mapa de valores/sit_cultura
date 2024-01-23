@@ -1,8 +1,7 @@
-;id_sit_cultura;sit_cultura
-0;1;Não é época de plantio
-1;2;Plantio atrasado
-2;3;Nenhuma perda
-3;4;Alguma perda
-4;5;Grandes perdas
-5;6;Perdas prováveis
-6;99;Não sei informar
+1;Não é época de plantio
+2;Plantio atrasado
+3;Nenhuma perda
+4;Alguma perda
+5;Grandes perdas
+6;Perdas prováveis
+99;Não sei informar

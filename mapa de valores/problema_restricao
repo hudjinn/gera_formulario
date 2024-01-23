@@ -1,10 +1,9 @@
-;id_problema_restricao;problema_restricao
-0;1;Sem problemas
-1;2;Navegabilidade comprometida
-2;3;Racionamento ou rodízio no abastecimento
-3;4;Restrições ou suspensão de outorgas
-4;5;Desabastecimento público
-5;6;Potabilidade da Água
-6;7;Mortandade de peixes
-7;99;Não informado
-8;8;Dessedentação Animal (morte de gado)
+1;Sem problemas
+2;Navegabilidade comprometida
+3;Racionamento ou rodízio no abastecimento
+4;Restrições ou suspensão de outorgas
+5;Desabastecimento público
+6;Potabilidade da Água
+7;Mortandade de peixes
+99;Não informado
+8;Dessedentação Animal (morte de gado)

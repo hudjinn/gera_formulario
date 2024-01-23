@@ -3,6 +3,7 @@ import os
 
 from datetime import datetime
 import psycopg2
+from psycopg2.extras import execute_values
 import pandas as pd
 
 import logging
@@ -15,12 +16,13 @@ class ETL:
     def __init__(self):
         self.tabelas = ['dt_chuva',
                         'de_chuva',
-                        'qnt_chuva'
+                        'qnt_chuva',
                         'percepcao_seca',
                         'acesso_agua',
                         'sit_cultura',
                         'tipo_cultura',
                         'problema_restricao']
+        
         self.estados = ["AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", 
                         "MA", "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR",
                         "RJ", "RN", "RO", "RR", "RS", "SC", "SE", "SP", "TO"]
@@ -94,8 +96,9 @@ class ETL:
             query = f"SELECT * FROM monitor.{tabela}"
             # Execute a consulta e obtenha os dados como DataFrame
             dados_tabela = pd.read_sql_query(query, self.conectar_bd())
+            dados_tabela.set_index(f'id_{tabela}', inplace=True)
             file_path = os.path.join(values_path, tabela)
-            dados_tabela.to_csv(file_path, sep=';')
+            dados_tabela.to_csv(file_path, sep=';', header=None)
 
 
 
@@ -125,7 +128,9 @@ class ETL:
         df_data.rename(columns=self.mapeamento_col, inplace=True)
 
         df_data = self.substituir_valores(df_data=df_data, df_values=df_values)
-
+        
+        #TESTE
+        df_data['qnt_chuva'] = 1
         return df_data
 
 
@@ -208,19 +213,18 @@ class ETL:
             try:
                 cursor = conn.cursor()
 
-                # Gera a string de inserção
+            # Gera a string de inserção
                 insert_query = f"""
-                    INSERT INTO impactos_seca ({', '.join(df_data.columns)})
+                    INSERT INTO monitor.impactos_seca ({', '.join(df_data.columns)})
                     VALUES %s
                 """
-                print(df_data)
-                print(insert_query)
-                exit()
 
-                # Executa a inserção
-                print(insert_query, values)
-                exit()
-                cursor.executemany(insert_query, values)
+                # Gera os valores para inserção
+                values = [tuple(row[1]) for row in df_data.iterrows()]
+
+                # Utiliza execute_values para inserção em lote
+                execute_values(cursor, insert_query, values, page_size=len(values))
+
                 conn.commit()
 
                 print("Dados inseridos com sucesso!")
@@ -267,6 +271,7 @@ class ETL:
         
         # Remover hífen do ano_mes
         df_data['ano_mes'] = df_data['ano_mes'].str.replace('-', '')
+        df_data['ano_mes'] = df_data['ano_mes'].astype(int)
 
         return df_data
 
@@ -274,7 +279,7 @@ class ETL:
 
 if __name__ == "__main__":
     etl = ETL()
-    atualizar = False
+    atualizar = True
     # Obtém o diretório do arquivo executado
     current_dir = os.path.dirname(__file__)
     root_path = os.path.abspath(current_dir)
@@ -292,7 +297,6 @@ if __name__ == "__main__":
     df_values = etl.carregar_mapa_valores(path=values_id_path)
     df_data = etl.carregar_dados_planilhas(path=files_path, df_values=df_values)
 
-    etl.atualizar_mapa_valores(values_id_path)
 
     etl.inserir_dados(df_data=df_data)
    

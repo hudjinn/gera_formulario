@@ -1,5 +1,4 @@
-;id_dt_chuva;dt_chuva
-0;1;Não choveu
-1;2;Menos de 10 dias
-2;3;Mais de 10 dias
-3;99;Não sei avaliar
+1;Não choveu
+2;Menos de 10 dias
+3;Mais de 10 dias
+99;Não sei avaliar

@@ -151,7 +151,7 @@
 
 	<form action="processar_dados.php" method="post">
 
-		<div class="row" style="margin-top: 10px;">
+		<div class="row flex" style="margin-top: 10px;">
 			<div class="col-md-2">
 				<label for="uf"><strong>UF:</strong></label>
 				<select id="uf" name="uf" required></select>
@@ -161,65 +161,18 @@
 				<label for="municipio"><strong>Município:</strong></label>
 				<select id="municipio" name="municipio" required></select>
 			</div>
-
+			
+			
+		</div>
+		<div class="row flex" style="margin-top: 10px;">
 			<div class="col-md-2">
 				<label for="ano"><strong>Ano:</strong></label>
 				<input class="anomes" type="number" id="ano" name="ano" required min="1900" max="2099">
 			</div>
-			<div class="col-md-2">
+			<div class="col-md-4">
 				<label for="mes"><strong>Mês:</strong></label>
 				<input class="anomes" type="number" id="mes" name="mes" required min="1" max="12">
 			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-md-6">
-				<label for="chuva_dt"><strong>Distribuição Temporal (DT) - Chuva:</strong></label>
-				<select id="chuva_dt" name="chuva_dt" required>
-					<option value="dt_chuva_1">Não choveu</option>
-					<option value="dt_chuva_2">Menos de 10 dias</option>
-					<option value="dt_chuva_3">Mais de 10 dias</option>
-					<option value="dt_chuva_99">Não sei avaliar</option>
-				</select>
-			</div>
-
-			<div class="col-md-6">
-				<label for="chuva_de"><strong>Distribuição Espacial (DE) - Chuva:</strong></label>
-				<select id="chuva_de" name="chuva_de" required>
-					<option value="chuva_de_1">Não choveu</option>
-					<option value="chuva_de_2">Chuva isolada</option>
-					<option value="chuva_de_3">Chuva abrangente</option>
-					<option value="chuva_de_99">Não sei avaliar</option>
-				</select>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-md-6">
-				<label for="qnt_chuva"><strong>Quantidade de Chuva:</strong></label>
-				<select id="qnt_chuva" name="qnt_chuva" required>
-					<option value="qnt_chuva_1">Não choveu</option>
-					<option value="qnt_chuva_2">Pouca chuva</option>
-					<option value="qnt_chuva_3">Razoável</option>
-					<option value="qnt_chuva_4">Muita chuva</option>
-					<option value="qnt_chuva_99">Não sei avaliar</option>'
-				</select>
-			</div>
-			<div class="col-md-6">
-				<label for="acesso_agua"><strong>Acesso à água:</strong></label>
-
-				<select id="acesso_agua" name="acesso_agua" required>
-					<option value="acesso_agua_1">Nenhum problema</option>
-					<option value="acesso_agua_2">Níveis baixos, mas sem problemas</option>
-					<option value="acesso_agua_3">Níveis baixos e alguns usos afetados</option>
-					<option value="acesso_agua_4">Níveis muito baixos e há restrições de uso</option>
-					<option value="acesso_agua_5">Níveis críticos e restrições severas</option>
-					<option value="acesso_agua_6">Sistemas hídricos em colapso/Falta d'água generalizada</option>
-					<option value="acesso_agua_99">Não sei informar</option>
-				</select>
-			</div>				
-		</div>
-		<div class="row">
 			<div class="col-md-6">
 				<label for="sit_cultura"><strong>Situação das Culturas de Sequeiro:</strong></label>
 				<select id="sit_cultura" name="sit_cultura" required>
@@ -232,22 +185,58 @@
 					<option value="sit_cultura_99">Não sei informar</option>'
 				</select>
 			</div>
+		</div>
 
+		<div class="row flex">
 			<div class="col-md-6">
-				<label for="percepcao_subj"><strong>Percepção Subjetiva da Seca:</strong></label>
-				<select id="percepcao_subj" name="percepcao_subj" required>
-					<option value="percepcao_subj_1">Houve melhora</option>
-					<option value="percepcao_subj_2">Houve piora</option>
-					<option value="percepcao_subj_3">Não houve alteração</option>
-					<option value="percepcao_subj_4">Não há seca</option>
-					<option value="percepcao_subj_99">Não sei opinar</option>
+				<label for="chuva_dt"><strong>Distribuição Temporal (DT) - Chuva:</strong></label>
+				<select id="chuva_dt" name="chuva_dt" required>
+					<option value="dt_chuva_1">Não choveu</option>
+					<option value="dt_chuva_2">Menos de 10 dias</option>
+					<option value="dt_chuva_3">Mais de 10 dias</option>
+					<option value="dt_chuva_99">Não sei avaliar</option>
 				</select>
 			</div>
 			
+		<div class="row flex"></div>
+			<div class="col-md-12">
+				<label for="chuva_de"><strong>Distribuição Espacial (DE) - Chuva:</strong></label>
+				<select id="chuva_de" name="chuva_de" required>
+					<option value="chuva_de_1">Não choveu</option>
+					<option value="chuva_de_2">Chuva isolada</option>
+					<option value="chuva_de_3">Chuva abrangente</option>
+					<option value="chuva_de_99">Não sei avaliar</option>
+				</select>
+			</div>
 		</div>
 
-		<div class="row">
-			
+		<div class="row flex">
+			<div class="col-md-6">
+				<label for="qnt_chuva"><strong>Quantidade de Chuva:</strong></label>
+				<select id="qnt_chuva" name="qnt_chuva" required>
+					<option value="qnt_chuva_1">Não choveu</option>
+					<option value="qnt_chuva_2">Pouca chuva</option>
+					<option value="qnt_chuva_3">Razoável</option>
+					<option value="qnt_chuva_4">Muita chuva</option>
+					<option value="qnt_chuva_99">Não sei avaliar</option>'
+				</select>
+			</div>
+
+		</div>
+		<div class="row flex">
+			<div class="col-md-6">
+				<label for="acesso_agua"><strong>Acesso à água:</strong></label>
+
+				<select id="acesso_agua" name="acesso_agua" required>
+					<option value="acesso_agua_1">Nenhum problema</option>
+					<option value="acesso_agua_2">Níveis baixos, mas sem problemas</option>
+					<option value="acesso_agua_3">Níveis baixos e alguns usos afetados</option>
+					<option value="acesso_agua_4">Níveis muito baixos e há restrições de uso</option>
+					<option value="acesso_agua_5">Níveis críticos e restrições severas</option>
+					<option value="acesso_agua_6">Sistemas hídricos em colapso/Falta d'água generalizada</option>
+					<option value="acesso_agua_99">Não sei informar</option>
+				</select>
+			</div>	
 			<div class="checkbox-container col-md-3" style="margin-left: 12px" id="header">
 				<label for="tipo_cultura"><strong>Tipos de Culturas:</strong></label>
 				<br>
@@ -277,9 +266,12 @@
 			
 				<input type="checkbox" id="tipo_cultura_99" name="tipo_cultura[]" value="tipo_cultura_99">
 				<label for="tipo_cultura_99">Não informado</label><br>
-			</div>
+			</div>	
+		</div>
 
-			<div class="col-md-3"></div>			
+		<div class="row">	
+
+			<div class="col-md-12"></div>			
 
 			<div class="checkbox-container col-md-3" style="margin-left: 12px">
 				<label for="problema_restricao" id="header" ><strong>Problema/Restrição:</strong></label><br>

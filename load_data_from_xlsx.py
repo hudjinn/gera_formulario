@@ -6,14 +6,18 @@ import psycopg2
 from psycopg2.extras import execute_values
 import pandas as pd
 
-import logging
-
-# Configurar o logger
-logging.basicConfig(filename='atualizacao_mapas.log', level=logging.ERROR)
-
 
 class ETL:
     def __init__(self):
+        """
+        Inicializa a classe ETL.
+
+        Atributos:
+        - tabelas (list): Lista das tabelas a serem processadas.
+        - estados (list): Lista dos estados a serem considerados.
+        - mapeamento_col (dict): Dicionário que mapeia as colunas entre DataFrame e tabela do banco de dados.
+        """
+        
         self.tabelas = ['dt_chuva',
                         'de_chuva',
                         'qnt_chuva',
@@ -41,6 +45,8 @@ class ETL:
             'Tipo de Cultura': 'tipo_cultura',
             'Problema/Restrição': 'problema_restricao'
         }
+        self.sucesso = False
+        self.lista_arquivos = []
 
     def armazenar_planilhas(self, path, df):
         """
@@ -53,23 +59,26 @@ class ETL:
         Returns:
             None
         """    
-        self.criar_dir(path)
+
         
-        for estado in df['Estado'].unique():
-            df_estado = df[df['Estado'] == estado]
+        for estado in df['uf'].unique():
+            self.criar_dir(path, estado)
+            df_estado = df[df['uf'] == estado]
             estado_path = os.path.join(path, estado)
 
             # Renomeia o arquivo com a data atual
             timestamp = datetime.now().strftime("%Y%m%d")
-            new_file = f"impactos_seca_{estado}_{timestamp}.xlsx"
+            new_file = f"impactos_seca_{estado}_{timestamp}.csv"
             new_file_path = os.path.join(estado_path, new_file)
 
             # Salva o DataFrame como arquivo Excel
-            df_estado.to_excel(new_file_path, index=False)
+            df_estado.to_csv(new_file_path, index=False, sep=';')
             print(f'Dados salvos em: {new_file_path}')
+            
+            for file in self.lista_arquivos:
+                os.remove(file)
 
-
-    def criar_dir(self, path):
+    def criar_dir(self, path, estado):
         """
         Cria diretórios para cada estado se não existirem.
 
@@ -79,14 +88,17 @@ class ETL:
         Returns:
             None
         """
-        for estado in self.estados:
-            estado_path = os.path.join(path, estado)
-            os.makedirs(estado_path, exist_ok=True) 
+
+        estado_path = os.path.join(path, estado)
+        os.makedirs(estado_path, exist_ok=True) 
             
             
     def atualizar_mapa_valores(self, values_path):
         """
         Atualiza os arquivos CSV com mapas de valores contendo id e descrição de cada índice da tabela.
+
+        Args:
+            values_path (str): Caminho do diretório contendo os arquivos CSV de mapas de valores.
 
         Returns:
             None
@@ -102,7 +114,7 @@ class ETL:
 
 
 
-    def carregar_dados_planilhas(self, path, df_values):
+    def carregar_dados_planilhas(self, path):
         """
         Carrega dados de planilhas Excel em um DataFrame, realiza mapeamento de colunas e substitui valores.
 
@@ -120,17 +132,14 @@ class ETL:
         for file in files:
             df = pd.read_excel(file)
             df_data = pd.concat([df_data, df], ignore_index=True)
-
+            self.lista_arquivos.append(file)
         # Verifica e remove dados duplicados
         df_data.drop_duplicates(inplace=True)
         
         # Renomeia colunas do DataFrame de acordo com o mapeamento
         df_data.rename(columns=self.mapeamento_col, inplace=True)
 
-        df_data = self.substituir_valores(df_data=df_data, df_values=df_values)
-        
-        #TESTE
-        df_data['qnt_chuva'] = 1
+
         return df_data
 
 
@@ -235,7 +244,9 @@ class ETL:
                 
 
             finally:
+
                 if conn is not None:
+                    self.sucesso = True
                     conn.close()
                     
 
@@ -257,7 +268,7 @@ class ETL:
 
                 if col in ['tipo_cultura', 'problema_restricao']:
                     df_data[col] = df_data[col].apply(lambda x: [mapeamento_valores.get(val, val) for val in x.split(', ')])
-                else:
+                else:               
                     df_data[col] = df_data[col].map(mapeamento_valores)
 
         # Substituir uf e municipio por cod_mun através de consulta ao banco
@@ -286,20 +297,21 @@ if __name__ == "__main__":
     
     # Diretório dos Formulários
     files_path = os.path.join(root_path, 'formularios')
-    
+
     # Diretório dos Mapas de Valores
-    values_id_path = os.path.join(root_path, 'mapa de valores')
+    values_id_path = os.path.join(root_path, 'mapa_de_valores')
     
     if atualizar:
         etl.atualizar_mapa_valores(values_id_path)
     
     # Obtém os códigos para correlação id/descrição
     df_values = etl.carregar_mapa_valores(path=values_id_path)
-    df_data = etl.carregar_dados_planilhas(path=files_path, df_values=df_values)
-
-
-    etl.inserir_dados(df_data=df_data)
-   
+    df_data = etl.carregar_dados_planilhas(path=files_path)
+    if not df_data.empty:
+        df_data_with_id = etl.substituir_valores(df_data=df_data, df_values=df_values)
+        etl.inserir_dados(df_data=df_data_with_id)
+        if etl.sucesso:
+            etl.armazenar_planilhas(path=files_path, df=df_data)
 
 
 

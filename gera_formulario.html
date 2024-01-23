@@ -232,6 +232,17 @@
 					<option value="sit_cultura_99">Não sei informar</option>'
 				</select>
 			</div>
+			<div class="col-md-6">
+				<label for="qnt_chuva"><strong>Quantidade de Chuva:</strong></label>
+				<select id="qnt_chuva" name="qnt_chuva" required>
+					<option value="qnt_chuva_1">Não choveu</option>
+					<option value="qnt_chuva_2">Pouca chuva</option>
+					<option value="qnt_chuva_3">Razoável</option>
+					<option value="qnt_chuva_4">Muita chuva</option>
+					<option value="qnt_chuva_99">Não sei avaliar</option>'
+				</select>
+			</div>
+			
 		</div>
 
 		<div class="row">
@@ -316,6 +327,7 @@
 				<th>Ano/Mês de Referência</th>
 				<th>Estado</th>
 				<th>Município</th>
+				<th>Quantidade de Chuva</th>
 				<th>Chuva (DT)</th>
 				<th>Chuva (DE)</th>
 				<th>Percepção Subjetiva</th>
@@ -358,6 +370,7 @@
 				$('<td>').text(formData.sit_cultura),
 				$('<td>').text(tipoCulturaText),
 				$('<td>').text(problemaRestricaoText),
+				$('<td>').text(formData.qnt_chuva),
 				$('<td>').html('<button type="button" class="editar-btn">Editar</button>'),
 				$('<td>').html('<button type="button" class="remover-btn"> x </button>')
 			);
@@ -377,6 +390,7 @@
 			$('#percepcao_subj').val(entrada.percepcao_subj_val);
 			$('#acesso_agua').val(entrada.acesso_agua_val);
 			$('#sit_cultura').val(entrada.sit_cultura_val);
+			$('#qnt_chuva').val(entrada.qnt_chuva)
 		
 
 			// Preencher checkboxes de tipo_cultura
@@ -444,19 +458,20 @@
 				anoMes: ano + '-' + mes,
 				uf: $('#uf').val(),
 				municipio: $('#municipio').val(),
-				chuva_dt_val: $('#chuva_dt').val(),  // Use .val() instead of .text()
+				chuva_dt_val: $('#chuva_dt').val(), 
 				chuva_dt: $('#chuva_dt option:selected').text(),
 				chuva_de: $('#chuva_de option:selected').text(),
-				chuva_de_val: $('#chuva_de').val(),  // Use .val() instead of .text()
+				chuva_de_val: $('#chuva_de').val(), 
 				percepcao_subj: $('#percepcao_subj option:selected').text(),
-				percepcao_subj_val: $('#percepcao_subj').val(),  // Use .val() instead of .text()
+				percepcao_subj_val: $('#percepcao_subj').val(), 
 				acesso_agua: $('#acesso_agua option:selected').text(),
-				acesso_agua_val: $('#acesso_agua').val(),  // Use .val() instead of .text()
+				acesso_agua_val: $('#acesso_agua').val(), 
 				sit_cultura: $('#sit_cultura option:selected').text(),
-				sit_cultura_val: $('#sit_cultura').val(),  // Use .val() instead of .text()
-		
+				sit_cultura_val: $('#sit_cultura').val(),  
+				qnt_chuva_val: $('#qnt_chuva option:selected').val(),
+				qnt_chuva: $('#qnt_chuva option:selected').text(),
 				tipo_cultura: $('input[name="tipo_cultura[]"]:checked').map(function () {
-					return this.value;  // Use this.value to get the value attribute
+					return this.value;  
 				}).get(),
 		
 				tipo_cultura_val: $('input[name="tipo_cultura[]"]:checked').map(function () {
@@ -658,6 +673,7 @@
 						'Município': entrada.municipio,
 						'Chuva (DT)': entrada.chuva_dt,
 						'Chuva (DE)': entrada.chuva_de,
+						'Quantidade de Chuva': entrada.qnt_chuva,
 						'Percepção Subjetiva': entrada.percepcao_subj,
 						'Acesso à Água': entrada.acesso_agua,
 						'Situação das Culturas de Sequeiro': entrada.sit_cultura,

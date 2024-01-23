@@ -15,6 +15,7 @@ class ETL:
     def __init__(self):
         self.tabelas = ['dt_chuva',
                         'de_chuva',
+                        'qnt_chuva'
                         'percepcao_seca',
                         'acesso_agua',
                         'sit_cultura',
@@ -31,6 +32,7 @@ class ETL:
             'Município': 'municipio',
             'Chuva (DT)': 'dt_chuva',
             'Chuva (DE)': 'de_chuva',
+            'Quantidade de Chuva': 'qnt_chuva',
             'Percepção Subjetiva': 'percepcao_seca',
             'Acesso à Água': 'acesso_agua',
             'Situação das Culturas de Sequeiro': 'sit_cultura',
@@ -208,15 +210,16 @@ class ETL:
 
                 # Gera a string de inserção
                 insert_query = f"""
-                    INSERT INTO tabela_dados ({', '.join(df_data.columns)})
+                    INSERT INTO impactos_seca ({', '.join(df_data.columns)})
                     VALUES %s
                 """
-
-                # Gera os valores para inserção
-                values = [tuple(row) for row in df_data.to_numpy()]
+                print(df_data)
+                print(insert_query)
+                exit()
 
                 # Executa a inserção
-
+                print(insert_query, values)
+                exit()
                 cursor.executemany(insert_query, values)
                 conn.commit()
 

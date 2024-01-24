@@ -62,7 +62,7 @@ class ETL:
 
         
         for estado in df['uf'].unique():
-            self.criar_dir(path, estado)
+            self.criar_dir_estados(path, estado)
             df_estado = df[df['uf'] == estado]
             estado_path = os.path.join(path, estado)
 
@@ -78,7 +78,7 @@ class ETL:
             for file in self.lista_arquivos:
                 os.remove(file)
 
-    def criar_dir(self, path, estado):
+    def criar_dir_estados(self, path, estado):
         """
         Cria diretórios para cada estado se não existirem.
 
@@ -88,7 +88,7 @@ class ETL:
         Returns:
             None
         """
-
+        
         estado_path = os.path.join(path, estado)
         os.makedirs(estado_path, exist_ok=True) 
             

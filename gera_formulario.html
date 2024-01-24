@@ -25,6 +25,9 @@
 	}
 	
 	th, td {
+		background-color: #4CAF50;
+		color: white;
+		padding: 10px 15px;
 		border: 1px solid #dddddd;
 		text-align: left;
 		padding: 8px;
@@ -36,12 +39,6 @@
 		width: calc(50% - 10px);
 	}
 
-	th, td {
-		background-color: #4CAF50;
-		color: white;
-		padding: 10px 15px;
-
-	}
 	.divisoria {
 		border-top: 2px solid #ccc;
 		margin-top: 15px;
@@ -160,7 +157,7 @@
 		<h2>Formulário de Impactos de Seca</h2>
 		<img id="bg" src="https://monitordesecas.ana.gov.br/monitor_fundo_topo.eecefd2edf0a8c450c61.png" alt="Background">
 	</div>
-	<div class="col-4" style="border: 1px solid #000000;">
+	<div class="col-4" style="border: 1px solid #000000; margin-left: 10px">
 		<div class="form-row">
 			<div class="col-4">				
 				<label for="uf"><strong>UF:</strong></label>
@@ -342,7 +339,7 @@
 	<div class="divisoria">
 
 	</div>
-	<div id="tabela">
+	<div id="tabela" style="margin-left: 10px; margin-top: 5px">
 		<table id="tabela-dados" border="1">
 			<thead>
 				<tr>
@@ -362,7 +359,7 @@
 			</thead>
 			<tbody></tbody>
 		</table>
-		<button type="button" id="exportar-btn">Exportar para XLSX</button>
+		<button type="button" id="exportar-btn" style="margin-top: 10px;">Exportar para XLSX</button>
 
 	</div>
 </div>

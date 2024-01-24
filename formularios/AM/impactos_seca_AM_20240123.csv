@@ -1,0 +1,4 @@
+ano_mes;uf;municipio;dt_chuva;de_chuva;percepcao_seca;acesso_agua;sit_cultura;tipo_cultura;problema_restricao;qnt_chuva
+2020-10;AM;Alvarães;2;2;2;5;4;[4, 5, 6];[4, 5, 6];98
+2020-10;AM;Itacoatiara;3;2;4;6;4;[1, 3, 7];[2, 3];98
+2020-10;AM;Uarini;1;2;2;3;3;[1, 3, 4];[1];98

@@ -16,6 +16,7 @@
 	body {
 		font-family: Arial, sans-serif;
 		font-size: 12px;
+		
 	}
 
 	label {
@@ -35,15 +36,17 @@
 		width: calc(50% - 10px);
 	}
 
-	th {
+	th, td {
 		background-color: #4CAF50;
 		color: white;
+		padding: 10px 15px;
 
 	}
 	.divisoria {
 		border-top: 2px solid #ccc;
 		margin-top: 15px;
 	}
+
 	button {
 		background-color: #4CAF50;
 		color: white;
@@ -52,6 +55,7 @@
 		border-radius: 5px;
 		cursor: pointer;
 	}
+
 	.remover-btn {
 		background-color: #FF0000;
 		color: #FFFFFF;
@@ -68,20 +72,21 @@
 		padding: 10px 15px;
 		cursor: pointer;
 	}
+
 	select {
 		height: 30px;
-		width: 50%;
-		margin-bottom: 10px;
+		width: auto;
+
 	}
 	input.anomes {
 
 		height: 30px;
-		width: 50%;
+		width: auto;
 		margin-bottom: 5px;
 		
 	}
 	select#uf {
-		width: fit-content;
+		width: auto;
 	}
 	.monitor {
 		position: relative;
@@ -119,7 +124,7 @@
 		margin-left: 10px;
 
 	}
-	.row, .col, .col-5 {
+	.form-row, .col, .col-5 {
 		margin-top: 5px;
 		margin-bottom: 2px;
 		margin-left: 10px;
@@ -155,22 +160,22 @@
 		<h2>Formulário de Impactos de Seca</h2>
 		<img id="bg" src="https://monitordesecas.ana.gov.br/monitor_fundo_topo.eecefd2edf0a8c450c61.png" alt="Background">
 	</div>
-	<div class="col-5" style="border: 1px solid #000000;">
+	<div class="col-4" style="border: 1px solid #000000;">
 		<div class="form-row">
-			<div class="col">				
+			<div class="col-4">				
 				<label for="uf"><strong>UF:</strong></label>
 				<select id="uf" name="uf" required></select></div>
-			<div class="col">	
+			<div class="col-8">	
 				<label for="municipio"><strong>Município:</strong></label>
 				<select id="municipio" name="municipio" required></select>
 			</div>
 		</div>	
 		<div class="form-row">
-			<div class="col">
+			<div class="col-4">
 				<label for="ano"><strong>Ano:</strong></label>
 				<input class="anomes" type="number" id="ano" name="ano" required min="1900" max="2099">
 			</div>
-			<div class="col">
+			<div class="col-8">
 				<label for="mes"><strong>Mês:</strong></label>
 				<input class="anomes" type="number" id="mes" name="mes" required min="1" max="12">
 			</div>
@@ -333,32 +338,33 @@
 			<button type="button" id="cancelar-btn" style="display: none;">Cancelar</button>
 			</form>
 		</div>
-<div class="divisoria"></div>
+	</div>
+	<div class="divisoria">
 
+	</div>
+	<div id="tabela">
+		<table id="tabela-dados" border="1">
+			<thead>
+				<tr>
+					<th>Ano/Mês de Referência</th>
+					<th>Estado</th>
+					<th>Município</th>
+					<th>Quantidade de Chuva</th>
+					<th>Chuva (DT)</th>
+					<th>Chuva (DE)</th>
+					<th>Percepção Subjetiva</th>
+					<th>Acesso à Água</th>
+					<th>Situação das Culturas de Sequeiro</th>
+					<th>Tipo de Cultura</th>
+					<th>Problema/Restrição</th>
+					
+				</tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+		<button type="button" id="exportar-btn">Exportar para XLSX</button>
 
-	<table id="tabela-dados" border="1">
-		<thead>
-			<tr>
-				<th>Ano/Mês de Referência</th>
-				<th>Estado</th>
-				<th>Município</th>
-				<th>Quantidade de Chuva</th>
-				<th>Chuva (DT)</th>
-				<th>Chuva (DE)</th>
-				<th>Percepção Subjetiva</th>
-				<th>Acesso à Água</th>
-				<th>Situação das Culturas de Sequeiro</th>
-				<th>Tipo de Cultura</th>
-				<th>Problema/Restrição</th>
-				
-			</tr>
-		</thead>
-		<tbody></tbody>
-	</table>
-	<br>
-
-	<button type="button" id="exportar-btn">Exportar para XLSX</button>
-	<div class="divisoria"></div>
+	</div>
 </div>
 
 <script>

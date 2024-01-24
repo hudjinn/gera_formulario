@@ -24,14 +24,17 @@
 		vertical-align: top;
 	}
 	
-	th, td {
+	th{
 		background-color: #4CAF50;
 		color: white;
 		padding: 10px 15px;
 		border: 1px solid #dddddd;
 		text-align: left;
 		padding: 8px;
+	}
 
+	td {
+		padding: 8px;
 	}
 	.checkbox-container {
 		margin-top: 2px;
@@ -68,6 +71,7 @@
 		border-radius: 5px;
 		padding: 10px 15px;
 		cursor: pointer;
+		font-size: 10px;
 	}
 
 	select {
@@ -157,6 +161,7 @@
 		<h2>Formulário de Impactos de Seca</h2>
 		<img id="bg" src="https://monitordesecas.ana.gov.br/monitor_fundo_topo.eecefd2edf0a8c450c61.png" alt="Background">
 	</div>
+
 	<div class="col-4" style="border: 1px solid #000000; margin-left: 10px">
 		<div class="form-row">
 			<div class="col-4">				
@@ -177,8 +182,8 @@
 				<input class="anomes" type="number" id="mes" name="mes" required min="1" max="12">
 			</div>
 		</div>
-		
 	</div>	
+	<div class="divisoria"></div>
 	<div class="form-row">
 		<div class="col-6" id="coluna-1">
 			
@@ -336,9 +341,7 @@
 			</form>
 		</div>
 	</div>
-	<div class="divisoria">
-
-	</div>
+	<div class="divisoria"></div>
 	<div id="tabela" style="margin-left: 10px; margin-top: 5px">
 		<table id="tabela-dados" border="1">
 			<thead>
@@ -439,7 +442,7 @@
 			}
 
 			// Formatar o Mês para garantir que seja exibido com dois dígitos
-			var mes = $('#mes').val().padStart(2, '0');
+			var mes = $('#mes').val().padStart(2, '0').slice(-2);
 
 			// Verificar o intervalo para Mês
 			if (parseInt(mes, 10) < 1 || parseInt(mes, 10) > 12) {

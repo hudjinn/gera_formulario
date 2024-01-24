@@ -1,6 +1,0 @@
-ano_mes;uf;municipio;dt_chuva;de_chuva;percepcao_seca;acesso_agua;sit_cultura;tipo_cultura;problema_restricao;qnt_chuva
-2022-01;RJ;Angra dos Reis;1;2;3;5;3;[2, 3];[4];98
-2022-01;RJ;Cabo Frio;3;2;2;6;4;[3, 4];[4];98
-2022-01;RJ;Mesquita;2;3;2;5;3;[3, 4, 5];[2, 4, 5, 6, 7, 8];98
-2022-01;RJ;Teresópolis;3;1;2;4;3;[3, 4, 5, 6];[5, 6];98
-2022-01;RJ;Petrópolis;1;1;1;1;1;[99];[3];98

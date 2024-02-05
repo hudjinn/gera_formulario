@@ -8,7 +8,7 @@ import pandas as pd
 
 
 class ETL:
-    def __init__(self):
+    def __init__(self, host, database, user, password, port=5432):
         """
         Inicializa a classe ETL.
 
@@ -47,6 +47,11 @@ class ETL:
         }
         self.sucesso = False
         self.lista_arquivos = []
+        self.conexao = {"database": database,
+                        "user": user,
+                        "password": password,
+                        "host": host,
+                        "port": port}
 
     def armazenar_planilhas(self, path, df):
         """
@@ -88,7 +93,7 @@ class ETL:
         Returns:
             None
         """
-        
+        os.makedirs(os.path.join(path, 'formularios'))
         estado_path = os.path.join(path, estado)
         os.makedirs(estado_path, exist_ok=True) 
             
@@ -193,12 +198,7 @@ class ETL:
             psycopg2.extensions.connection: Conexão ao banco de dados.
         """
         try:
-            conn = psycopg2.connect(
-                database="monitor",
-                user="postgres",
-                password="12345",
-                host="192.168.10.74",
-                port="5432"
+            conn = psycopg2.connect(**self.conexao
             )
             return conn
         except psycopg2.Error as e:
@@ -289,7 +289,14 @@ class ETL:
 
 
 if __name__ == "__main__":
-    etl = ETL()
+    
+    database="monitor"
+    user="postgres"
+    password="12345"
+    host="192.168.10.74"
+    port="5432"
+
+    etl = ETL(host=host, database=database, user=user, password=password, port=port)
     atualizar = True
     # Obtém o diretório do arquivo executado
     current_dir = os.path.dirname(__file__)
@@ -306,7 +313,7 @@ if __name__ == "__main__":
     
     # Obtém os códigos para correlação id/descrição
     df_values = etl.carregar_mapa_valores(path=values_id_path)
-    df_data = etl.carregar_dados_planilhas(path=files_path)
+    df_data = etl.carregar_dados_planilhas(path=root_path)
     if not df_data.empty:
         df_data_with_id = etl.substituir_valores(df_data=df_data, df_values=df_values)
         etl.inserir_dados(df_data=df_data_with_id)

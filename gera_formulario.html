@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>Formulário - Persistência de Chuva</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -11,361 +11,363 @@
     <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 </head>
-<body>
-<style>
-	body {
-		font-family: Arial, sans-serif;
-		font-size: 12px;
-		
-	}
+<body style="width: 1570px;">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa; /* Cor de fundo padrão */
+        }
 
-	label {
-		text-align: center;
-		vertical-align: top;
-	}
-	
-	th{
-		background-color: #4CAF50;
-		color: white;
-		padding: 10px 15px;
-		border: 1px solid #dddddd;
-		text-align: left;
-		padding: 8px;
-	}
+        h2 {
+            color: #FFFFFF;
+            text-align: center;
+			transform: translateX(50%);
+			margin-top: 15px;
+        }
 
-	td {
-		padding: 8px;
-	}
-	.checkbox-container {
-		margin-top: 2px;
-		border: 1px solid #000;
-		width: calc(50% - 10px);
-	}
+        label {
+            text-align: center;
+            vertical-align: top;
+        }
 
-	.divisoria {
-		border-top: 2px solid #ccc;
-		margin-top: 15px;
-	}
+        th {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: 1px solid #dddddd;
+            text-align: left;
+        }
 
-	button {
-		background-color: #4CAF50;
-		color: white;
-		padding: 10px 15px;
-		border: none;
-		border-radius: 5px;
-		cursor: pointer;
-	}
+        td {
+            padding: 8px;
+        }
 
-	.remover-btn {
-		background-color: #FF0000;
-		color: #FFFFFF;
-		border: 1px solid #FF0000;
-		border-radius: 5px;
-		padding: 10px 15px;
-		cursor: pointer;
-	}
-	.editando-btn {
-		background-color: #aaaab3;
-		color: #000000;
-		border: 1px solid #aaaab3;
-		border-radius: 5px;
-		padding: 10px 15px;
-		cursor: pointer;
-		font-size: 10px;
-	}
+        .checkbox-container {
+            margin-top: 2px;
+            border: 1px solid #000;
+        }
 
-	select {
-		height: 30px;
-		width: auto;
+        .divisoria {
+            border-top: 2px solid #ccc;
+            margin-top: 15px;
+        }
 
-	}
-	input.anomes {
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-		height: 30px;
-		width: auto;
-		margin-bottom: 5px;
-		
-	}
-	select#uf {
-		width: auto;
-	}
-	.monitor {
-		position: relative;
-	}
-  
-	#logo {
-		margin-top: 1vh;
-		margin-left: 0;
-		width: calc(30vh + 8px);
-		max-width: 75%;
-		z-index: 0; /* Alterado para 0 para colocar o logo no mesmo nível que o título */
-	}
-	
-	h2 {
-		position: absolute;
-		top: 0;
-		left: 50%;
-		transform: translateX(-50%);
-		margin-top: 2vh;
-		color: #FFFFFF;
-		text-align: center;
-		font-size: calc(3vw + 2px);
-	}
+        .remover-btn,
+        .editando-btn {
+            background-color: #aaaab3;
+            color: #000000;
+            border: 1px solid #aaaab3;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 10px;
+        }
 
-	#bg {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 80px; /* Ajuste conforme necessário */
-		z-index: -2; /* Coloca o background abaixo do logo e do título */
-	}
-	#nova-entrada-btn {
-		margin-top: 10px;
-		margin-left: 10px;
+        select,
+        input.anomes {
+            height: 30px;
+            width: translate(50% - 10px);
+            margin-bottom: 5px;
+        }
 
-	}
-	.form-row, .col, .col-5 {
-		margin-top: 5px;
-		margin-bottom: 2px;
-		margin-left: 10px;
-	}
+        select#uf {
+            width: auto;
+        }
 
+        .monitor {
+            position: relative;
+        }
 
-	@media screen and (max-width: 768px) {
-		.logo {
-			width: 100%; /* ou outra largura desejada para telas menores */
-			/* outras propriedades da logo para telas menores... */
-		}
-		h2 {
-			top: 1vh;
+        #bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            z-index: -2;
+        }
+
+        #nova-entrada-btn {
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+        .form-row,
+        .col,
+        .col-5 {
+            margin-top: 5px;
+            margin-bottom: 2px;
+            margin-left: 10px;
+        }
+
+        img#Logo2 {
+            margin-right: 2px;
+			height: 70px;
+            width: 70px;
+			align-items: center;
+            float: right;
 			position: absolute;
-			text-align: right;
-			transform: translateX(0%);
-			margin-right: 5px;
-		}
-		select {
+			right: 0%;
+        }
+
+		img#logo {
+			margin-left: 10px;
 			width: auto;
 		}
 
-		button {
-			width: auto
-		};
-	}
-</style>
-</head>
-<body>
-<form action="processar_dados.php" method="post">
-	<div class="monitor-fluid mb-4">
-		<img id="logo" src="https://monitordesecas.ana.gov.br/assets/img/logo_nome_horizontal_branco.png" alt="Logo">
-		<h2>Formulário de Impactos de Seca</h2>
-		<img id="bg" src="https://monitordesecas.ana.gov.br/monitor_fundo_topo.eecefd2edf0a8c450c61.png" alt="Background">
-	</div>
 
-	<div class="col-4" style="border: 1px solid #000000; margin-left: 10px">
-		<div class="form-row">
-			<div class="col-4">				
-				<label for="uf"><strong>UF:</strong></label>
-				<select id="uf" name="uf" required></select></div>
-			<div class="col-8">	
-				<label for="municipio"><strong>Município:</strong></label>
-				<select id="municipio" name="municipio" required></select>
-			</div>
-		</div>	
-		<div class="form-row">
-			<div class="col-4">
-				<label for="ano"><strong>Ano:</strong></label>
-				<input class="anomes" type="number" id="ano" name="ano" required min="1900" max="2099">
-			</div>
-			<div class="col-8">
-				<label for="mes"><strong>Mês:</strong></label>
-				<input class="anomes" type="number" id="mes" name="mes" required min="1" max="12">
-			</div>
+
+    </style>
+</head>
+
+<form action="processar_dados.php" method="post">
+<div class="row">
+	<img id="logo" src="https://monitordesecas.ana.gov.br/assets/img/logo_nome_horizontal_branco.png" alt="Logo">
+
+	<h2 id="header">Formulário de Impactos de Seca</h2>
+
+	<img src="https://ana-monitor-secas-files.s3.sa-east-1.amazonaws.com/uploads/img/monitor_brasil_150.png" id="Logo2" alt="Logo2">
+
+</div>	
+<img id="bg" src="https://monitordesecas.ana.gov.br/monitor_fundo_topo.eecefd2edf0a8c450c61.png" alt="Background">
+
+<br>
+<div class="col-md-6" style="border: 1px solid #000000; margin-left: 10px">
+	<div class="form-row">
+		<div class="col-md-4">				
+			<label for="uf"><strong>UF:</strong></label>
+			<select id="uf" name="uf" required></select></div>
+		<div class="col-md-8">	
+			<label for="municipio"><strong>Município:</strong></label>
+			<select id="municipio" name="municipio" required></select>
 		</div>
 	</div>	
-	<div class="divisoria"></div>
 	<div class="form-row">
-		<div class="col-6" id="coluna-1">
-			
-			<div class="form-row">
-				<div class="col">
-					<label for="chuva_dt"><strong>Distribuição Temporal (DT) - Chuva:</strong></label>
-					<select id="chuva_dt" name="chuva_dt" required>
-						<option value="dt_chuva_1">Não choveu</option>
-						<option value="dt_chuva_2">Menos de 10 dias</option>
-						<option value="dt_chuva_3">Mais de 10 dias</option>
-						<option value="dt_chuva_99">Não sei avaliar</option>
-					</select>
-				</div>
-			</div>
-			<div class="form-row">
-				<div class="col">
-					<label for="chuva_de"><strong>Distribuição Espacial (DE) - Chuva:</strong></label>
-					<select id="chuva_de" name="chuva_de" required>
-						<option value="chuva_de_1">Não choveu</option>
-						<option value="chuva_de_2">Chuva isolada</option>
-						<option value="chuva_de_3">Chuva abrangente</option>
-						<option value="chuva_de_99">Não sei avaliar</option>
-					</select>
-				</div>
-			</div>
-			<div class="form-row">
-				<div class="col">
-					<label for="qnt_chuva"><strong>Quantidade de Chuva:</strong></label>
-					<select id="qnt_chuva" name="qnt_chuva" required>
-						<option value="qnt_chuva_1">Não choveu</option>
-						<option value="qnt_chuva_2">Pouca chuva</option>
-						<option value="qnt_chuva_3">Razoável</option>
-						<option value="qnt_chuva_4">Muita chuva</option>
-						<option value="qnt_chuva_99">Não sei avaliar</option>'
-					</select>
-				</div>
-			</div>
-			<div class="form-row">
-				<div class="col">
-					<label for="acesso_agua"><strong>Acesso à água:</strong></label>
-					<select id="acesso_agua" name="acesso_agua" required>
-						<option value="acesso_agua_1">Nenhum problema</option>
-						<option value="acesso_agua_2">Níveis baixos, mas sem problemas</option>
-						<option value="acesso_agua_3">Níveis baixos e alguns usos afetados</option>
-						<option value="acesso_agua_4">Níveis muito baixos e há restrições de uso</option>
-						<option value="acesso_agua_5">Níveis críticos e restrições severas</option>
-						<option value="acesso_agua_6">Sistemas hídricos em colapso/Falta d'água generalizada</option>
-						<option value="acesso_agua_99">Não sei informar</option>
-					</select>
-				</div>
-			</div>
-			<div class="form-row">
-				<div class="col">
-					<div class="checkbox-container col-md-12" style="margin-left: 0px">
-						<label for="problema_restricao" id="header" ><strong>Problema/Restrição:</strong></label><br>
-			
-						<input type="checkbox" id="problema_restricao_1" name="problema_restricao[]" value="problema_restricao_1">
-						<label for="problema_restricao_1">Sem problemas</label><br>
-			
-						<input type="checkbox" id="problema_restricao_2" name="problema_restricao[]" value="problema_restricao_2">
-						<label for="problema_restricao_2">Navegabilidade comprometida</label><br>
-			
-						<input type="checkbox" id="problema_restricao_3" name="problema_restricao[]" value="problema_restricao_3">
-						<label for="problema_restricao_3">Racionamento ou rodízio no abastecimento</label><br>
-			
-						<input type="checkbox" id="problema_restricao_4" name="problema_restricao[]" value="problema_restricao_4">
-						<label for="problema_restricao_4">Restrições ou suspensão de outorgas</label><br>
-			
-						<input type="checkbox" id="problema_restricao_5" name="problema_restricao[]" value="problema_restricao_5">
-						<label for="problema_restricao_5">Desabastecimento público</label><br>
-			
-						<input type="checkbox" id="problema_restricao_6" name="problema_restricao[]" value="problema_restricao_6">
-						<label for="problema_restricao_6">Potabilidade da Água</label><br>
-			
-						<input type="checkbox" id="problema_restricao_7" name="problema_restricao[]" value="problema_restricao_7">
-						<label for="problema_restricao_7">Mortandade de peixes</label><br>
-			
-						<input type="checkbox" id="problema_restricao_8" name="problema_restricao[]" value="problema_restricao_8">
-						<label for="problema_restricao_8">Dessedentação Animal (morte de gado)</label><br>
-			
-						<input type="checkbox" id="problema_restricao_99" name="problema_restricao[]" value="problema_restricao_99">
-						<label for="problema_restricao_99">Não informado</label><br>
-					</div>
-				</div>
+		<div class="col-md-4">
+			<label for="ano"><strong>Ano:</strong></label>
+			<input class="anomes" type="number" id="ano" name="ano" required min="1900" max="2099">
+		</div>
+		<div class="col-md-8">
+			<label for="mes"><strong>Mês:</strong></label>
+			<input class="anomes" type="number" id="mes" name="mes" required min="1" max="12">
+		</div>
+	</div>
+</div>	
+<div class="divisoria"></div>
+<div class="form-row">
+	<div class="col-md-6" id="coluna-1">
+		<div class="form-row">
+			<div class="col-md">
+				<label for="percepcao_subj"><strong>Percepção Subjetiva da Seca:</strong></label>
+				<select id="percepcao_subj" class="dropbox-select" name="percepcao_subj" required>
+					<option value="" disabled selected hidden>Selecione uma opção</option>
+					<option value="percepcao_subj_1">Houve melhora</option>
+					<option value="percepcao_subj_2">Houve piora</option>
+					<option value="percepcao_subj_3">Não houve alteração</option>
+					<option value="percepcao_subj_4">Não há seca</option>
+					<option value="percepcao_subj_99">Não sei opinar</option>
+				</select>
 			</div>
 		</div>
-
-		<div class="col-6" id="coluna-2">
-			<div class="form-row">
-				<div class="col">
-					<label for="percepcao_subj"><strong>Percepção Subjetiva da Seca:</strong></label>
-					<select id="percepcao_subj" name="percepcao_subj" required>
-						<option value="percepcao_subj_1">Houve melhora</option>
-						<option value="percepcao_subj_2">Houve piora</option>
-						<option value="percepcao_subj_3">Não houve alteração</option>
-						<option value="percepcao_subj_4">Não há seca</option>
-						<option value="percepcao_subj_99">Não sei opinar</option>
-					</select>
-				</div>
+		<div class="form-row">
+			<div class="col-md">
+				<label for="chuva_dt"><strong>Distribuição Temporal (DT) - Chuva:</strong></label>
+				<select id="chuva_dt" class="dropbox-select" name="chuva_dt" required>
+					<option value="" disabled selected hidden>Selecione uma opção</option>
+					<option value="dt_chuva_1">Não choveu</option>
+					<option value="dt_chuva_2">Menos de 10 dias</option>
+					<option value="dt_chuva_3">Mais de 10 dias</option>
+					<option value="dt_chuva_99">Não sei avaliar</option>
+				</select>
 			</div>
-			<div class="form-row">
-				<div class="col">
-					<label for="sit_cultura"><strong>Situação das Culturas de Sequeiro:</strong></label>
-					<select id="sit_cultura" name="sit_cultura" required>
-						<option value="sit_cultura_1">Não é época de plantio</option>
-						<option value="sit_cultura_2">Plantio atrasado</option>
-						<option value="sit_cultura_3">Nenhuma perda</option>
-						<option value="sit_cultura_4">Alguma perda</option>
-						<option value="sit_cultura_5">Grandes perdas</option>
-						<option value="sit_cultura_6">Perdas prováveis</option>
-						<option value="sit_cultura_99">Não sei informar</option>'
-					</select>
-				</div>
+		</div>
+		<div class="form-row">
+			<div class="col-md">
+				<label for="chuva_de"><strong>Distribuição Espacial (DE) - Chuva:</strong></label>
+				<select id="chuva_de" class="dropbox-select" name="chuva_de" required>
+					<option value="" disabled selected hidden>Selecione uma opção</option>
+					<option value="chuva_de_1">Não choveu</option>
+					<option value="chuva_de_2">Chuva isolada</option>
+					<option value="chuva_de_3">Chuva abrangente</option>
+					<option value="chuva_de_99">Não sei avaliar</option>
+				</select>
 			</div>
-			<div class="form-row">
-				<div class="col">
-					<div class="checkbox-container col-md-12">
-						<label for="tipo_cultura"><strong>Tipos de Culturas:</strong></label>
-						<br>
-						<input type="checkbox" id="tipo_cultura_1" name="tipo_cultura[]" value="tipo_cultura_1">
-						<label for="tipo_cultura_1">Arroz</label><br>
-					
-						<input type="checkbox" id="tipo_cultura_2" name="tipo_cultura[]" value="tipo_cultura_2">
-						<label for="tipo_cultura_2">Cana-de-açúcar</label><br>
-					
-						<input type="checkbox" id="tipo_cultura_3" name="tipo_cultura[]" value="tipo_cultura_3">
-						<label for="tipo_cultura_3">Cevada</label><br>
-					
-						<input type="checkbox" id="tipo_cultura_4" name="tipo_cultura[]" value="tipo_cultura_4">
-						<label for="tipo_cultura_4">Feijão</label><br>
-					
-						<input type="checkbox" id="tipo_cultura_5" name="tipo_cultura[]" value="tipo_cultura_5">
-						<label for="tipo_cultura_5">Milho</label><br>
-					
-						<input type="checkbox" id="tipo_cultura_6" name="tipo_cultura[]" value="tipo_cultura_6">
-						<label for="tipo_cultura_6">Soja</label><br>
-					
-						<input type="checkbox" id="tipo_cultura_7" name="tipo_cultura[]" value="tipo_cultura_7">
-						<label for="tipo_cultura_7">Trigo</label><br>
-					
-						<input type="checkbox" id="tipo_cultura_98" name="tipo_cultura[]" value="tipo_cultura_98">
-						<label for="tipo_cultura_98">Outra</label><br>
-					
-						<input type="checkbox" id="tipo_cultura_99" name="tipo_cultura[]" value="tipo_cultura_99">
-						<label for="tipo_cultura_99">Não informado</label><br>
-					</div>
+		</div>
+		<div class="form-row">
+			<div class="col-md">
+				<label for="qnt_chuva"><strong>Quantidade de Chuva:</strong></label>
+				<select id="qnt_chuva" class="dropbox-select" name="qnt_chuva" required>
+					<option value="" disabled selected hidden>Selecione uma opção</option>
+					<option value="qnt_chuva_1">Não choveu</option>
+					<option value="qnt_chuva_2">Pouca chuva</option>
+					<option value="qnt_chuva_3">Razoável</option>
+					<option value="qnt_chuva_4">Muita chuva</option>
+					<option value="qnt_chuva_99">Não sei avaliar</option>'
+				</select>
+			</div>
+		</div>
+		<div class="form-row">
+			<div class="col-md">
+				<label for="acesso_agua"><strong>Acesso à água:</strong></label>
+				<select id="acesso_agua" class="dropbox-select" name="acesso_agua" required>
+					<option value="" disabled selected hidden>Selecione uma opção</option>
+					<option value="acesso_agua_1">Nenhum problema</option>
+					<option value="acesso_agua_2">Níveis baixos, mas sem problemas</option>
+					<option value="acesso_agua_3">Níveis baixos e alguns usos afetados</option>
+					<option value="acesso_agua_4">Níveis muito baixos e há restrições de uso</option>
+					<option value="acesso_agua_5">Níveis críticos e restrições severas</option>
+					<option value="acesso_agua_6">Sistemas hídricos em colapso/Falta d'água generalizada</option>
+					<option value="acesso_agua_99">Não sei informar</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-row">
+			<div class="col-md">
+				<div class="checkbox-container col-md-12" style="margin-left: 0px">
+					<label for="problema_restricao" id="header" ><strong>Problema/Restrição:</strong></label><br>
+		
+					<input type="checkbox" id="problema_restricao_1" name="problema_restricao[]" value="problema_restricao_1">
+					<label for="problema_restricao_1">Sem problemas</label><br>
+		
+					<input type="checkbox" id="problema_restricao_2" name="problema_restricao[]" value="problema_restricao_2">
+					<label for="problema_restricao_2">Navegabilidade comprometida</label><br>
+		
+					<input type="checkbox" id="problema_restricao_3" name="problema_restricao[]" value="problema_restricao_3">
+					<label for="problema_restricao_3">Racionamento ou rodízio no abastecimento</label><br>
+		
+					<input type="checkbox" id="problema_restricao_4" name="problema_restricao[]" value="problema_restricao_4">
+					<label for="problema_restricao_4">Restrições ou suspensão de outorgas</label><br>
+		
+					<input type="checkbox" id="problema_restricao_5" name="problema_restricao[]" value="problema_restricao_5">
+					<label for="problema_restricao_5">Desabastecimento público</label><br>
+		
+					<input type="checkbox" id="problema_restricao_6" name="problema_restricao[]" value="problema_restricao_6">
+					<label for="problema_restricao_6">Potabilidade da Água</label><br>
+		
+					<input type="checkbox" id="problema_restricao_7" name="problema_restricao[]" value="problema_restricao_7">
+					<label for="problema_restricao_7">Mortandade de peixes</label><br>
+		
+					<input type="checkbox" id="problema_restricao_8" name="problema_restricao[]" value="problema_restricao_8">
+					<label for="problema_restricao_8">Dessedentação Animal (morte de gado)</label><br>
+		
+					<input type="checkbox" id="problema_restricao_99" name="problema_restricao[]" value="problema_restricao_99">
+					<label for="problema_restricao_99">Não informado</label><br>
 				</div>
 			</div>
 		</div>
 	</div>
-		<div>
-			<button type="button" id="nova-entrada-btn">Nova Entrada</button>
-			<button type="button" id="salvar-edicao-btn" style="display: none;">Salvar Edição</button>
-			<button type="button" id="cancelar-btn" style="display: none;">Cancelar</button>
-			</form>
-		</div>
-	</div>
-	<div class="divisoria"></div>
-	<div id="tabela" style="margin-left: 10px; margin-top: 5px">
-		<table id="tabela-dados" border="1">
-			<thead>
-				<tr>
-					<th>Ano/Mês de Referência</th>
-					<th>Estado</th>
-					<th>Município</th>
-					<th>Quantidade de Chuva</th>
-					<th>Chuva (DT)</th>
-					<th>Chuva (DE)</th>
-					<th>Percepção Subjetiva</th>
-					<th>Acesso à Água</th>
-					<th>Situação das Culturas de Sequeiro</th>
-					<th>Tipo de Cultura</th>
-					<th>Problema/Restrição</th>
-					
-				</tr>
-			</thead>
-			<tbody></tbody>
-		</table>
-		<button type="button" id="exportar-btn" style="margin-top: 10px;">Exportar para XLSX</button>
 
+	<div class="col-md-6" id="coluna-2">
+
+		<div class="form-row">
+			<div class="col-md">
+				<label for="sit_cultura"><strong>Situação das Culturas de Sequeiro:</strong></label>
+				<select id="sit_cultura" class="dropbox-select" name="sit_cultura" required>
+					<option value="" disabled selected hidden>Selecione uma opção</option>
+					<option value="sit_cultura_1">Não é época de plantio</option>
+					<option value="sit_cultura_2">Plantio atrasado</option>
+					<option value="sit_cultura_3">Nenhuma perda</option>
+					<option value="sit_cultura_4">Alguma perda</option>
+					<option value="sit_cultura_5">Grandes perdas</option>
+					<option value="sit_cultura_6">Perdas prováveis</option>
+					<option value="sit_cultura_99">Não sei informar</option>'
+				</select>
+			</div>
+		</div>
+		<div class="form-row">
+			<div class="col-md">
+				<div class="checkbox-container col-md-12">
+					<label for="tipo_cultura"><strong>Tipos de Culturas:</strong></label>
+					<br>
+					<input type="checkbox" id="tipo_cultura_1" name="tipo_cultura[]" value="tipo_cultura_1">
+					<label for="tipo_cultura_1">Arroz</label><br>
+				
+					<input type="checkbox" id="tipo_cultura_2" name="tipo_cultura[]" value="tipo_cultura_2">
+					<label for="tipo_cultura_2">Cana-de-açúcar</label><br>
+				
+					<input type="checkbox" id="tipo_cultura_3" name="tipo_cultura[]" value="tipo_cultura_3">
+					<label for="tipo_cultura_3">Cevada</label><br>
+				
+					<input type="checkbox" id="tipo_cultura_4" name="tipo_cultura[]" value="tipo_cultura_4">
+					<label for="tipo_cultura_4">Feijão</label><br>
+				
+					<input type="checkbox" id="tipo_cultura_5" name="tipo_cultura[]" value="tipo_cultura_5">
+					<label for="tipo_cultura_5">Milho</label><br>
+				
+					<input type="checkbox" id="tipo_cultura_6" name="tipo_cultura[]" value="tipo_cultura_6">
+					<label for="tipo_cultura_6">Soja</label><br>
+				
+					<input type="checkbox" id="tipo_cultura_7" name="tipo_cultura[]" value="tipo_cultura_7">
+					<label for="tipo_cultura_7">Trigo</label><br>
+
+					<input type="checkbox" id="tipo_cultura_8" name="tipo_cultura[]" value="tipo_cultura_8">
+					<label for="tipo_cultura_8">Café</label><br>
+					
+					<input type="checkbox" id="tipo_cultura_9" name="tipo_cultura[]" value="tipo_cultura_9">
+					<label for="tipo_cultura_9">Mandioca/Aipim/Macaxeira</label><br>
+
+					<input type="checkbox" id="tipo_cultura_10" name="tipo_cultura[]" value="tipo_cultura_10">
+					<label for="tipo_cultura_10">Fruticultura</label><br>
+
+					<input type="checkbox" id="tipo_cultura_11" name="tipo_cultura[]" value="tipo_cultura_11">
+					<label for="tipo_cultura_11">Pastagem</label><br>
+
+					<input type="checkbox" id="tipo_cultura_97" name="tipo_cultura[]" value="tipo_cultura_97">
+					<label for="tipo_cultura_97">Outros grãos</label><br>
+					
+					<input type="checkbox" id="tipo_cultura_98" name="tipo_cultura[]" value="tipo_cultura_98">
+					<label for="tipo_cultura_98">Outras culturas não especificadas</label><br>
+				
+					<input type="checkbox" id="tipo_cultura_99" name="tipo_cultura[]" value="tipo_cultura_99">
+					<label for="tipo_cultura_99">Não informado</label><br>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
+	<div>
+		<button type="button" id="nova-entrada-btn">Nova Entrada</button>
+		<button type="button" id="salvar-edicao-btn" style="display: none;">Salvar Edição</button>
+		<button type="button" id="cancelar-btn" style="display: none;">Cancelar</button>
+		</form>
+	</div>
+</div>
+<div class="divisoria"></div>
+<div id="tabela" style="margin-left: 10px; margin-top: 5px">
+	<table id="tabela-dados" border="1">
+		<thead>
+			<tr>
+				<th>Ano/Mês de Referência</th>
+				<th>Estado</th>
+				<th>Município</th>
+				<th>Percepção Subjetiva</th>
+				<th>Chuva (DT)</th>
+				<th>Chuva (DE)</th>
+				<th>Quantidade de Chuva</th>
+				<th>Acesso à Água</th>
+				<th>Problema/Restrição</th>
+				<th>Situação das Culturas de Sequeiro</th>
+				<th>Tipo de Cultura</th>			
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+	<button type="button" id="exportar-btn" style="margin-top: 10px;">Exportar para XLSX</button>
+
+</div>
+
 
 <script>
 	$(document).ready(function () {
@@ -384,14 +386,14 @@
 				$('<td>').text(formData.anoMes),
 				$('<td>').text(formData.uf),
 				$('<td>').text(formData.municipio),
+				$('<td>').text(formData.percepcao_subj),
 				$('<td>').text(formData.chuva_dt),
 				$('<td>').text(formData.chuva_de),
-				$('<td>').text(formData.percepcao_subj),
+				$('<td>').text(formData.qnt_chuva),
 				$('<td>').text(formData.acesso_agua),
+				$('<td>').text(problemaRestricaoText),
 				$('<td>').text(formData.sit_cultura),
 				$('<td>').text(tipoCulturaText),
-				$('<td>').text(problemaRestricaoText),
-				$('<td>').text(formData.qnt_chuva),
 				$('<td>').html('<button type="button" class="editar-btn">Editar</button>'),
 				$('<td>').html('<button type="button" class="remover-btn"> x </button>')
 			);
@@ -411,7 +413,7 @@
 			$('#percepcao_subj').val(entrada.percepcao_subj_val);
 			$('#acesso_agua').val(entrada.acesso_agua_val);
 			$('#sit_cultura').val(entrada.sit_cultura_val);
-			$('#qnt_chuva').val(entrada.qnt_chuva)
+			$('#qnt_chuva').val(entrada.qnt_chuva_val)
 		
 
 			// Preencher checkboxes de tipo_cultura
@@ -434,12 +436,6 @@
 			var uf = $('#uf').val();
 			var municipio = $('#municipio').val();
 			ufSelecionada = $('#uf').val();
-			// Verificar o intervalo para Ano
-			var ano = parseInt($('#ano').val(), 10);
-			if (ano < 1950 || ano > 2099) {
-				alert('Erro: Verifique o Ano digitado. O formato é AAAA. Ex: 2024');
-				return;
-			}
 
 			// Formatar o Mês para garantir que seja exibido com dois dígitos
 			var mes = $('#mes').val().padStart(2, '0').slice(-2);
@@ -447,21 +443,39 @@
 			// Verificar o intervalo para Mês
 			if (parseInt(mes, 10) < 1 || parseInt(mes, 10) > 12) {
 				alert('Erro: Mês deve estar entre 1 e 12.');
-				return;
+				return false;
 			}
+
+			// Verificar o intervalo para Ano
+			var ano = parseInt($('#ano').val(), 10);
+			if (ano < 1950 || ano > 2099) {
+				alert('Erro: Verifique o Ano digitado. O formato é AAAA. Ex: 2024');
+				return false;
+			}
+			// Verificar Preenchimento do cabeçalho
 			if (!uf || !municipio || !ano || !mes) {
 				alert('Preencha UF, Município, Ano e Mês antes de adicionar uma nova entrada.');
-				return;
+				return false;
 			}
+
 			$('#uf').empty().append('<option value="' + ufSelecionada + '">' + ufSelecionada + '</option>').val(ufSelecionada);
 			$('#uf').prop('disabled', true);
+
+			// Verificar se as opções dos menus dropdown foram selecionadas
+			var dropdowns = ['#chuva_dt', '#chuva_de', '#percepcao_subj', '#acesso_agua', '#sit_cultura', '#qnt_chuva'];
+			for (var i = 0; i < dropdowns.length; i++) {
+				if (!$(dropdowns[i]).val()) {
+					alert('Por favor, selecione uma opção em todos os menus.');
+					return false;
+				}
+			}
 
             var checkboxMarcada = $('input[name="tipo_cultura[]"]:checked').length > 0 &&
                 $('input[name="problema_restricao[]"]:checked').length > 0;
 
             if (!checkboxMarcada) {
                 alert('Selecione pelo menos uma opção em Tipo de Cultura ou Problema/Restrição.');
-                return;
+                return false;
             }
 
 			// Verificar se "Sem problemas" foi marcado em Problema/Restrição
@@ -470,7 +484,7 @@
 
 			if (semProblemasMarcado && outrasOpcoesMarcadas) {
 				alert('Erro: Selecione apenas "Sem problemas" ou outras opções, não ambas.');
-				return;
+				return false;
 			}
 
 			formData = {
@@ -521,7 +535,6 @@
             ufSelecionada = formData.uf;
 			return formData
             
-
 		}
 
 		// Carregar UF
@@ -576,18 +589,26 @@
 			});
 		}
 		function obterTextosSelecionados(valoresSelecionados, checkboxSelector) {
+			if (!valoresSelecionados) {
+				return '';
+			}
+		
+			if (!Array.isArray(valoresSelecionados)) {
+				valoresSelecionados = [valoresSelecionados]; // Converter para array com um único elemento
+			}
+		
 			return valoresSelecionados.map(function (valor) {
 				return $(checkboxSelector + '[value="' + valor + '"]').next('label').text();
 			}).join(', ');
 		}
 
-
 		carregarUFs(ufSelecionada);
-
+		
 		//Inicio
 		$('#nova-entrada-btn').on('click', function () {
-			
+		
 			formData = criarValidar()
+
 			ufSelecionada = formData.uf;
 			novaLinha(formData)
 			dados.push(formData)
@@ -634,7 +655,7 @@
 			$(this).closest('tr').remove();
 			
 		});
-
+		
 		// Define a ação do botão "Salvar Edição"
 		$('#salvar-edicao-btn').on('click', function () {
 			formData = criarValidar()
@@ -712,8 +733,5 @@
 		});
 });
 </script>
-
-
-
 </body>
 </html>
